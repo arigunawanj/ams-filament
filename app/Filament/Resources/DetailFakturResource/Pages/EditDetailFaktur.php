@@ -16,4 +16,13 @@ class EditDetailFaktur extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+
+    protected function getCreatedNotificationTitle(): ?string
+    {
+        return 'Detail Faktur berhasil diedit';
+    }
 }

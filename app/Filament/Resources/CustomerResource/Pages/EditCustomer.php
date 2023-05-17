@@ -16,4 +16,14 @@ class EditCustomer extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+
+    protected function getCreatedNotificationTitle(): ?string
+    {
+        return 'Data Customer berhasil diubah';
+    }
 }
