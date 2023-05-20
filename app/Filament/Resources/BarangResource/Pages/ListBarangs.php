@@ -16,4 +16,11 @@ class ListBarangs extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            BarangResource\Widgets\BarangOverview::class,
+        ];
+    }   
 }

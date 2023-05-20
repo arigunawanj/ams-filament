@@ -21,7 +21,8 @@ class DistributorResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-briefcase';
     protected static ?string $navigationLabel = 'Kelola Distributor';
-    protected static ?string $navigationGroup = 'Pendataan';
+    protected static ?string $navigationGroup = 'Kelola';
+    protected static ?int $navigationSort = 8;
 
     public static function form(Form $form): Form
     {

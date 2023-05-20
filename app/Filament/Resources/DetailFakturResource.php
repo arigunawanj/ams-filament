@@ -20,8 +20,9 @@ class DetailFakturResource extends Resource
 {
     protected static ?string $model = DetailFaktur::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
-    protected static ?string $navigationGroup = 'Faktur';
+    protected static ?string $navigationIcon = 'heroicon-o-receipt-refund';
+    protected static ?string $navigationGroup = 'Pendataan';
+    protected static ?int $navigationSort = 11;
 
     public static function form(Form $form): Form
     {

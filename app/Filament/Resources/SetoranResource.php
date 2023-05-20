@@ -19,6 +19,8 @@ class SetoranResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
     protected static ?string $navigationLabel = 'Setoran';
+    protected static ?string $navigationGroup = 'Pendataan';
+    protected static ?int $navigationSort = 12;
 
     public static function form(Form $form): Form
     {

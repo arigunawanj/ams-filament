@@ -18,6 +18,8 @@ class NotesResource extends Resource
     protected static ?string $model = Notes::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationGroup = 'Pendataan';
+    protected static ?int $navigationSort = 13;
 
     public static function form(Form $form): Form
     {

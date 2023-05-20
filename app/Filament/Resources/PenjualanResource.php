@@ -20,6 +20,7 @@ class PenjualanResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-collection';
     protected static ?string $navigationLabel = 'Laporan Penjualan';
     protected static ?string $navigationGroup = 'Laporan';
+    protected static ?int $navigationSort = 14;
 
     public static function form(Form $form): Form
     {

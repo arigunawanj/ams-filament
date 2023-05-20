@@ -21,9 +21,10 @@ class HargaResource extends Resource
 {
     protected static ?string $model = Harga::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-tag';
     protected static ?string $navigationLabel = 'Kelola Harga';
-    protected static ?string $navigationGroup = 'Pendataan';
+    protected static ?string $navigationGroup = 'Kelola';
+    protected static ?int $navigationSort = 6;
 
     public static function form(Form $form): Form
     {

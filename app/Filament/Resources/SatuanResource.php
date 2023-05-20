@@ -21,9 +21,10 @@ class SatuanResource extends Resource
 {
     protected static ?string $model = Satuan::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
-    protected static ?string $navigationLabel = 'Kelola Satuan Barang';
-    protected static ?string $navigationGroup = 'Pendataan';
+    protected static ?string $navigationIcon = 'heroicon-o-ticket';
+    protected static ?string $navigationLabel = 'Kelola Satuan';
+    protected static ?string $navigationGroup = 'Kelola';
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {

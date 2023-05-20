@@ -18,9 +18,10 @@ class FakturResource extends Resource
 {
     protected static ?string $model = Faktur::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-receipt-refund';
     protected static ?string $navigationLabel = 'Tambah Barang Faktur';
-    protected static ?string $navigationGroup = 'Faktur';
+    protected static ?string $navigationGroup = 'Pendataan';
+    protected static ?int $navigationSort = 10;
 
     public static function form(Form $form): Form
     {

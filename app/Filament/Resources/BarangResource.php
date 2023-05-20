@@ -19,15 +19,17 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\BarangResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\BarangResource\RelationManagers;
+use App\Filament\Resources\BarangResource\Widgets\BarangOverview;
 
 class BarangResource extends Resource
 {
     protected static ?string $model = Barang::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-sun';
+    protected static ?string $navigationIcon = 'heroicon-o-gift';
     protected static ?string $navigationLabel = 'Kelola Barang';
-    protected static ?string $navigationGroup = 'Pendataan';
+    protected static ?string $navigationGroup = 'Kelola';
     public static ?string $label = 'Kelola Barang';
+    protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
     {
@@ -45,11 +47,11 @@ class BarangResource extends Resource
                         ->placeholder('Masukkan Kode Barang...')
                         ->maxLength(255),
                     Select::make('satuan_id')
-                    ->label('Satuan')
-                    ->relationship('satuan', 'nama_satuan'),
+                        ->label('Satuan')
+                        ->relationship('satuan', 'nama_satuan'),
                     Forms\Components\DatePicker::make('tgl_kadaluarsa')
-                    ->label('Tanggal Kadaluarsa')
-                    ->placeholder('Masukkan Tanggal Kadaluarsa...')
+                        ->label('Tanggal Kadaluarsa')
+                        ->placeholder('Masukkan Tanggal Kadaluarsa...')
                         ->required(),
                     Forms\Components\TextInput::make('qty_barang')
                         ->required()
@@ -72,27 +74,27 @@ class BarangResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-        
+
             ->columns([
                 Tables\Columns\TextColumn::make('kode_barang')
-                ->searchable()
-                ->label('Kode Barang')
-                ->sortable(),
+                    ->searchable()
+                    ->label('Kode Barang')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('nama_barang')
-                ->searchable()
-                ->label('Nama Barang')
-                ->sortable(),
+                    ->searchable()
+                    ->label('Nama Barang')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('satuan.nama_satuan')
-                ->label('Satuan')
-                ->sortable(),
+                    ->label('Satuan')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('qty_barang')
-                ->label('QTY')
-                ->sortable(),
+                    ->label('QTY')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('stok')
-                ->label('Stok')
-                ->sortable(),
+                    ->label('Stok')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('ket_barang')
-                ->label('Keterangan'),
+                    ->label('Keterangan'),
                 Tables\Columns\TextColumn::make('tgl_kadaluarsa')
                     ->date()
                     ->label('Tanggal Kadaluarsa')
@@ -108,16 +110,15 @@ class BarangResource extends Resource
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
-            
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -125,5 +126,12 @@ class BarangResource extends Resource
             'create' => Pages\CreateBarang::route('/create'),
             'edit' => Pages\EditBarang::route('/{record}/edit'),
         ];
-    }    
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            BarangOverview::class,
+        ];
+    }
 }

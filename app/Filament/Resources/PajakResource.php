@@ -20,6 +20,7 @@ class PajakResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-collection';
     protected static ?string $navigationLabel = 'Laporan Faktur Pajak';
     protected static ?string $navigationGroup = 'Laporan';
+    protected static ?int $navigationSort = 15;
 
     public static function form(Form $form): Form
     {
