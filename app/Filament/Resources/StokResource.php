@@ -21,6 +21,7 @@ class StokResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-truck';
     protected static ?string $navigationLabel = 'Stok Barang';
     protected static ?string $navigationGroup = 'Pendataan';
+    public static ?string $label = 'Kelola Stok Masuk';
     protected static ?int $navigationSort = 9;
 
     public static function form(Form $form): Form

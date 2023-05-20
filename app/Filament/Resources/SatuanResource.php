@@ -24,6 +24,7 @@ class SatuanResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
     protected static ?string $navigationLabel = 'Kelola Satuan';
     protected static ?string $navigationGroup = 'Kelola';
+    public static ?string $label = 'Kelola Satuan';
     protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
