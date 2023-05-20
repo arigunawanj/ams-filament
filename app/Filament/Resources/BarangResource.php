@@ -37,47 +37,28 @@ class BarangResource extends Resource
                     Forms\Components\TextInput::make('nama_barang')
                         ->required()
                         ->label('Nama Barang')
+                        ->placeholder('Masukkan Nama Barang...')
                         ->maxLength(255),
                     Forms\Components\TextInput::make('kode_barang')
                         ->required()
                         ->label('Kode Barang')
+                        ->placeholder('Masukkan Kode Barang...')
                         ->maxLength(255),
                     Select::make('satuan_id')
                     ->label('Satuan')
                     ->relationship('satuan', 'nama_satuan'),
                     Forms\Components\DatePicker::make('tgl_kadaluarsa')
                     ->label('Tanggal Kadaluarsa')
+                    ->placeholder('Masukkan Tanggal Kadaluarsa...')
                         ->required(),
-                    TextInput::make('harga_jual')
-                        ->required()
-                        ->label('Harga Jual')
-                        ->prefix('Rp')
-                        ->mask(
-                            fn (TextInput\Mask $mask) => $mask
-                                ->numeric()
-                                ->decimalPlaces(2)
-                                ->decimalSeparator(',')
-                                ->thousandsSeparator('.')
-                        )
-                        ->numeric(),
-                    TextInput::make('harga_netto')
-                        ->required()
-                        ->label('Harga Netto')
-                        ->prefix('Rp')
-                        ->mask(
-                            fn (TextInput\Mask $mask) => $mask
-                                ->numeric()
-                                ->decimalPlaces(2)
-                                ->decimalSeparator(',')
-                                ->thousandsSeparator('.')
-                        )
-                        ->numeric(),
                     Forms\Components\TextInput::make('qty_barang')
                         ->required()
+                        ->placeholder('Masukkan Jumlah Barang...')
                         ->label('QTY'),
                     Forms\Components\TextInput::make('stok')
                         ->required()
                         ->label('Stok')
+                        ->placeholder('Masukkan Stok Barang...')
                         ->numeric(),
                     TextArea::make('ket_barang')
                         ->required()
@@ -103,12 +84,6 @@ class BarangResource extends Resource
                 ->sortable(),
                 Tables\Columns\TextColumn::make('satuan.nama_satuan')
                 ->label('Satuan')
-                ->sortable(),
-                Tables\Columns\TextColumn::make('harga_jual')
-                ->label('Harga Jual')
-                ->sortable(),
-                Tables\Columns\TextColumn::make('harga_netto')
-                ->label('Harga Netto')
                 ->sortable(),
                 Tables\Columns\TextColumn::make('qty_barang')
                 ->label('QTY')

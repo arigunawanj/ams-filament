@@ -30,11 +30,9 @@ class BarangSeeder extends Seeder
           DB::table('barangs')->insert([
             'kode_barang' => $faker->randomnumber,
             'nama_barang' => $faker->name,
-            'harga_jual' => $faker->randomNumber(5, true),
             'qty_barang' => $faker->randomDigit,
             'stok' => $faker->randomDigit,
             'satuan_id' => $faker->randomNumber(1, true),
-            'harga_netto' => $faker->randomNumber(5, true),
             'ket_barang' => $faker->sentence,
             'tgl_kadaluarsa' => $faker->dateTimeBetween('+1 week', '+2 years'),
             'created_at' => Carbon::now(),
