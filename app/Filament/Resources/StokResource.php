@@ -4,14 +4,18 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\StokResource\Pages;
 use App\Filament\Resources\StokResource\RelationManagers;
+use App\Models\Barang;
 use App\Models\Stok;
 use Filament\Forms;
+use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Actions\DeleteAction;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class StokResource extends Resource
@@ -28,14 +32,20 @@ class StokResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('barang_id')
-                ->relationship('barang', 'nama_barang'),
-                Select::make('distributor_id')
-                ->relationship('distributor', 'nama_distributor'),
-                Forms\Components\TextInput::make('stok_masuk')
-                    ->required(),
-                Forms\Components\DatePicker::make('tanggal_masuk')
-                    ->required(),
+                Card::make([
+                    Select::make('barang_id')
+                        ->label('Nama Barang')
+                        ->relationship('barang', 'nama_barang'),
+                    Select::make('distributor_id')
+                        ->label('Nama Distributor')
+                        ->relationship('distributor', 'nama_distributor'),
+                    Forms\Components\TextInput::make('stok_masuk')
+                        ->label('Jumlah Masuk')
+                        ->required(),
+                    Forms\Components\DatePicker::make('tanggal_masuk')
+                        ->label('Tanggal Masuk')
+                        ->required(),
+                ])->columns(2)
             ]);
     }
 
@@ -43,30 +53,53 @@ class StokResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('barang_id'),
-                Tables\Columns\TextColumn::make('distributor_id'),
-                Tables\Columns\TextColumn::make('stok_masuk'),
+                Tables\Columns\TextColumn::make('barang.nama_barang')
+                    ->label('Nama Barang')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('distributor.nama_distributor')
+                    ->label('Nama Distributor')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('stok_masuk')
+                    ->label('Jumlah Masuk')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('tanggal_masuk')
-                    ->date(),
+                    ->date()
+                    ->label('Tanggal masuk')
+                    ->searchable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                DeleteAction::make()
+                    ->icon('heroicon-o-trash')
+                    ->before(function ($record) {
+                        $barang = Barang::find($record->barang_id);
+                        $stok = Stok::find($record->id);
+
+                        // Maka Table barang kolom stok barang dilakukan update dari (Table Barang kolom Stok) dikurangi dari (Table Stok kolom stok Masuk)
+                        $barang->update([
+                            'stok' => $barang->stok - $stok->stok_masuk,
+                        ]);
+                    })
+
+
+
+
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -74,5 +107,5 @@ class StokResource extends Resource
             'create' => Pages\CreateStok::route('/create'),
             'edit' => Pages\EditStok::route('/{record}/edit'),
         ];
-    }    
+    }
 }

@@ -20,6 +20,7 @@ use Filament\Tables\Actions\DeleteAction;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\Pages\EditUser;
 use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
+use App\Filament\Resources\UserResource\Pages\CreateUser;
 
 class UserResource extends Resource
 {
@@ -49,8 +50,9 @@ class UserResource extends Resource
                         ->unique(ignoreRecord: true),
                     TextInput::make('password')
                         ->password()
-                        ->required()
-                        ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                        ->dehydrateStateUsing(static fn (null|string $state):null|string => filled($state) ? Hash::make($state): null)
+                        ->required(static fn(Page $livewire):string => $livewire instanceof CreateUser,)
+                        ->dehydrated(static fn(null|string $state): bool => filled($state))
                         ->label(
                             static fn (Page $livewire): string => ($livewire instanceof EditUser) ? 'Ganti Password' : 'Masukkan Password'
                         ),
