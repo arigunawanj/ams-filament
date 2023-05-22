@@ -65,8 +65,7 @@ class BarangResource extends Resource
                     TextArea::make('ket_barang')
                         ->required()
                         ->maxLength(255)
-                        ->label('Keterangan')
-                        ->columnSpan(2),
+                        ->label('Keterangan'),
                 ])->columns(2),
             ]);
     }
@@ -93,12 +92,12 @@ class BarangResource extends Resource
                 Tables\Columns\TextColumn::make('stok')
                     ->label('Stok')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('ket_barang')
-                    ->label('Keterangan'),
                 Tables\Columns\TextColumn::make('tgl_kadaluarsa')
                     ->date()
                     ->label('Tanggal Kadaluarsa')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('ket_barang')
+                    ->label('Keterangan'),
             ])
             ->filters([
                 //
