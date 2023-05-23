@@ -28,7 +28,7 @@ class CustomerSeeder extends Seeder
 
             // insert data ke table pegawai menggunakan Faker
           DB::table('customers')->insert([
-            'kode_customer' => $faker->randomnumber,
+            'kode_customer' => $faker->unique()->randomnumber,
             'nama_customer' => $faker->name,
             'alamat_customer' => $faker->address,
             'telepon_customer' => $faker->phonenumber,

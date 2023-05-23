@@ -28,7 +28,7 @@ class DistributorSeeder extends Seeder
 
             // insert data ke table pegawai menggunakan Faker
             DB::table('distributors')->insert([
-                'kode_distributor' => $faker->randomnumber,
+                'kode_distributor' => $faker->unique()->randomnumber,
                 'nama_distributor' => $faker->name,
                 'alamat_distributor' => $faker->address,
                 'telepon_distributor' => $faker->phonenumber,

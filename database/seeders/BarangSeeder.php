@@ -28,7 +28,7 @@ class BarangSeeder extends Seeder
 
             // insert data ke table barang menggunakan Faker
           DB::table('barangs')->insert([
-            'kode_barang' => $faker->randomnumber,
+            'kode_barang' => $faker->unique()->randomnumber,
             'nama_barang' => $faker->name,
             'qty_barang' => $faker->randomDigit,
             'stok' => $faker->randomDigit,
