@@ -2,8 +2,10 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Barang;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Card;
+use Illuminate\Support\Facades\DB;
 
 class StatsOverview extends BaseWidget
 {
@@ -19,10 +21,10 @@ class StatsOverview extends BaseWidget
             ->description('3% increase')
             ->descriptionIcon('heroicon-s-trending-up')
             ->color('success'),
-        Card::make('Unique views', '192.1k')
+        Card::make('Stok Barang', Barang::all()->count())
             ->description('32k increase')
             ->descriptionIcon('heroicon-s-trending-up')
-            ->chart([7, 2, 10, 3, 15, 4, 17])
+            ->chart([12,13,14,15])
             ->color('success'),
         ];
     }

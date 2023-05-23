@@ -32,6 +32,7 @@ class CustomerResource extends Resource
                 Card::make([
                     Forms\Components\TextInput::make('kode_customer')
                         ->required()
+                        ->unique()
                         ->label('Kode Customer')
                         ->maxLength(255),
                     Forms\Components\TextInput::make('nama_customer')

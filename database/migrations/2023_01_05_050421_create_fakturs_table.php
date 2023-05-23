@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('fakturs', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_faktur');
+            $table->string('kode_faktur')->unique();
             $table->date('tanggal_faktur');
             $table->foreignId('customer_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('ket_faktur');

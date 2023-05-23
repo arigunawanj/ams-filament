@@ -30,6 +30,7 @@ class SetoranResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('kode_dep')
                     ->required()
+                    ->unique()
                     ->maxLength(255),
                 Forms\Components\DatePicker::make('tanggal_dep')
                     ->required(),

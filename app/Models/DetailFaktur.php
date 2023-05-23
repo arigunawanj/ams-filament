@@ -20,4 +20,14 @@ class DetailFaktur extends Model
     {
         return $this->belongsTo(Barang::class);
     }
+
+    public function faktur()
+    {
+        return $this->belongsTo(Faktur::class);
+    }
+
+    public function harga()
+    {
+        return $this->belongsTo(Harga::class);
+    }
 }

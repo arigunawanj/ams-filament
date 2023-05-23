@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('pajaks', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_laporan');
+            $table->string('kode_laporan')->unique();
             $table->foreignId('customer_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->date('tanggal_rep');
             $table->string('no_fakpajak');

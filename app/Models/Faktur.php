@@ -16,6 +16,11 @@ class Faktur extends Model
         return $this->hasMany(Penjualan::class);
     }
 
+    public function detail_faktur()
+    {
+        return $this->hasMany(DetailFaktur::class);
+    }
+
     public function customer()
     {
         return $this->belongsTo(Customer::class);

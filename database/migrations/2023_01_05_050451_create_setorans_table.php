@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('setorans', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_dep');
+            $table->string('kode_dep')->unique();
             $table->foreignId('customer_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->date('tanggal_dep');
             $table->integer('jumlah_masuk');

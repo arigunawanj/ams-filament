@@ -30,6 +30,7 @@ class PajakResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('kode_laporan')
                     ->required()
+                    ->unique()
                     ->maxLength(255),
                 Forms\Components\DatePicker::make('tanggal_rep')
                     ->required(),

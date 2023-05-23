@@ -43,6 +43,7 @@ class BarangResource extends Resource
                         ->maxLength(255),
                     Forms\Components\TextInput::make('kode_barang')
                         ->required()
+                        ->unique()
                         ->label('Kode Barang')
                         ->placeholder('Masukkan Kode Barang...')
                         ->maxLength(255),

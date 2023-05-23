@@ -31,6 +31,7 @@ class DistributorResource extends Resource
                 Card::make([
                     Forms\Components\TextInput::make('kode_distributor')
                         ->required()
+                        ->unique()
                         ->label('Kode Distributor')
                         ->maxLength(255),
                     Forms\Components\TextInput::make('nama_distributor')

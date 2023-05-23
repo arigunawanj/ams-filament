@@ -29,25 +29,7 @@ class DetailFakturResource extends Resource
         return $form
             ->schema([
                 Card::make([
-                    Forms\Components\TextInput::make('kode_faktur')
-                        ->required()
-                        ->maxLength(255),
-                    Repeater::make('Barang')
-                        ->schema([
-                            Select::make('barang_id')
-                            ->relationship('barang', 'nama_barang'),
-                            Forms\Components\TextInput::make('stok_keluar')
-                                ->required(),
-                            Forms\Components\TextInput::make('diskon')
-                                ->required(),
-                            Forms\Components\TextInput::make('subtotal')
-                                ->required(),
-                        ])
-                        ->columns(1),
-                    Select::make('customer_id')
-                        ->relationship('customer', 'nama_customer'),
-                    Forms\Components\DatePicker::make('tanggal_keluar')
-                        ->required(),
+                   //
                 ])->columns(1),
             ]);
     }

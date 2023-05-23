@@ -15,4 +15,9 @@ class Harga extends Model
     {
         return $this->belongsTo(Barang::class);
     }
+
+    public function detail_faktur()
+    {
+        return $this->hasMany(DetailFaktur::class);
+    }
 }
