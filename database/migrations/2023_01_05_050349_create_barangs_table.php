@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('nama_barang');
             $table->integer('qty_barang');
             $table->integer('stok');
-            $table->string('ket_barang');
+            $table->string('ket_barang')->nullable();
             $table->date('tgl_kadaluarsa');
             $table->timestamps();
         });

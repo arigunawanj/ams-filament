@@ -17,7 +17,7 @@ class PenjualanResource extends Resource
 {
     protected static ?string $model = Penjualan::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
     protected static ?string $navigationLabel = 'Laporan Penjualan';
     protected static ?string $navigationGroup = 'Laporan';
     public static ?string $label = 'Laporan Penjualan';

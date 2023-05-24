@@ -35,7 +35,7 @@ class HargaResource extends Resource
                     Forms\Components\TextInput::make('kode_harga')
                         ->required()
                         ->label('Kode Harga')
-                        ->unique()
+                        ->unique(ignoreRecord: true)
                         ->maxLength(255),
                     Select::make('barang_id')
                         ->label('Barang')

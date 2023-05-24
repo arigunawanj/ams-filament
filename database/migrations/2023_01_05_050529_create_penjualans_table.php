@@ -19,8 +19,8 @@ return new class extends Migration
             $table->date('tanggal_kirim');
             $table->string('kode');
             $table->integer('jumlah');
-            $table->string('keterangan');
-            $table->enum('status', ['Lunas', 'Belum Lunas'])->default('Belum Lunas');
+            $table->string('keterangan')->nullable();
+            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }

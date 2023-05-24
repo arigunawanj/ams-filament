@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('tanggal_rep');
             $table->string('no_fakpajak');
             $table->date('tanggal_upload');
-            $table->string('ket_rep');
+            $table->string('ket_rep')->nullable();
             $table->timestamps();
         });
     }

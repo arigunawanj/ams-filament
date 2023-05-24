@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('kode_faktur')->unique();
             $table->date('tanggal_faktur');
             $table->foreignId('customer_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->string('ket_faktur');
+            $table->string('ket_faktur')->nullable();
             $table->integer('total_harga');
             $table->string('ppn');
             $table->string('pph');

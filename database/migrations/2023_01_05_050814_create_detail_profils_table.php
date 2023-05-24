@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->text('alamat');
-            $table->string('foto');
+            $table->string('foto')->nullable();
             $table->date('tanggal_lahir');
             $table->string('telepon');
             $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();

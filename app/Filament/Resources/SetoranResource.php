@@ -2,22 +2,29 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SetoranResource\Pages;
-use App\Filament\Resources\SetoranResource\RelationManagers;
-use App\Models\Setoran;
 use Filament\Forms;
-use Filament\Resources\Form;
-use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
+use App\Models\Setoran;
+use Filament\Resources\Form;
+use Filament\Resources\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Card;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\SetoranResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\SetoranResource\RelationManagers;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Columns\BadgeColumn;
 
 class SetoranResource extends Resource
 {
     protected static ?string $model = Setoran::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
     protected static ?string $navigationLabel = 'Setoran';
     protected static ?string $navigationGroup = 'Pendataan';
     protected static ?int $navigationSort = 12;
@@ -26,24 +33,50 @@ class SetoranResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('customer_id')
-                    ->required(),
-                Forms\Components\TextInput::make('kode_dep')
-                    ->required()
-                    ->unique()
-                    ->maxLength(255),
-                Forms\Components\DatePicker::make('tanggal_dep')
-                    ->required(),
-                Forms\Components\TextInput::make('jumlah_masuk')
-                    ->required(),
-                Forms\Components\TextInput::make('jumlah_keluar')
-                    ->required(),
-                Forms\Components\TextInput::make('foto_dep')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('ket_dep')
-                    ->required()
-                    ->maxLength(255),
+                Card::make([
+                    Select::make('customer_id')
+                        ->label('Nama Customer')
+                        ->columnSpan(2)
+                        ->relationship('customer', 'nama_customer'),
+                    Forms\Components\TextInput::make('kode_dep')
+                        ->required()
+                        ->label('Kode Setoran')
+                        ->unique()
+                        ->maxLength(255),
+                    Forms\Components\DatePicker::make('tanggal_dep')
+                        ->label('Tanggal Setoran')
+                        ->required(),
+                    TextInput::make('jumlah_masuk')
+                        ->label('Jumlah Masuk')
+                        ->prefix('Rp')
+                        ->mask(
+                            fn (TextInput\Mask $mask) => $mask
+                                ->numeric()
+                                ->decimalPlaces(2)
+                                ->decimalSeparator(',')
+                                ->thousandsSeparator('.')
+                        )
+                        ->required(),
+                    TextInput::make('jumlah_keluar')
+                        ->label('Jumlah Keluar')
+                        ->prefix('Rp')
+                        ->mask(
+                            fn (TextInput\Mask $mask) => $mask
+                                ->numeric()
+                                ->decimalPlaces(2)
+                                ->decimalSeparator(',')
+                                ->thousandsSeparator('.')
+                        )
+                        ->required(),
+                    FileUpload::make('foto_dep')
+                        ->columnSpan(2)
+                        ->label('Lampiran'),
+                    Textarea::make('ket_dep')
+                        ->label('Keterangan')
+                        ->columnSpan(2)
+                        ->required()
+                        ->maxLength(255),
+                ])->columns(2)
             ]);
     }
 
@@ -51,33 +84,56 @@ class SetoranResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('customer_id'),
-                Tables\Columns\TextColumn::make('kode_dep'),
+                BadgeColumn::make('kode_dep')
+                    ->searchable()
+                    ->sortable()
+                    ->label('Kode Setoran'),
+                Tables\Columns\TextColumn::make('customer.nama_customer')
+                    ->searchable()
+                    ->sortable()
+                    ->label('Nama Customer'),
                 Tables\Columns\TextColumn::make('tanggal_dep')
+                    ->searchable()
+                    ->sortable()
+                    ->label('Tanggal Setoran')
                     ->date(),
-                Tables\Columns\TextColumn::make('jumlah_masuk'),
-                Tables\Columns\TextColumn::make('jumlah_keluar'),
-                Tables\Columns\TextColumn::make('foto_dep'),
-                Tables\Columns\TextColumn::make('ket_dep'),
+                Tables\Columns\TextColumn::make('jumlah_masuk')
+                    ->searchable()
+                    ->sortable()
+                    ->label('Jumlah Masuk')
+                    ->money('IDR'),
+                Tables\Columns\TextColumn::make('jumlah_keluar')
+                    ->searchable()
+                    ->sortable()
+                    ->label('Jumlah Keluar')
+                    ->money('IDR'),
+                Tables\Columns\TextColumn::make('foto_dep')
+                    ->label('Foto')
+                    ->placeholder('-'),
+                Tables\Columns\TextColumn::make('ket_dep')
+                    ->searchable()
+                    ->sortable()
+                    ->label('Keterangan'),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                DeleteAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -85,5 +141,5 @@ class SetoranResource extends Resource
             'create' => Pages\CreateSetoran::route('/create'),
             'edit' => Pages\EditSetoran::route('/{record}/edit'),
         ];
-    }    
+    }
 }

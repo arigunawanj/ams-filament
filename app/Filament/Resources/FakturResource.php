@@ -217,7 +217,7 @@ class FakturResource extends Resource
                         ]),
                     Textinput::make('hasilppn')
                         ->reactive()
-                        ,
+                        ->hidden(),
                     Select::make('pph')
                         ->required()
                         ->label('PPH')
