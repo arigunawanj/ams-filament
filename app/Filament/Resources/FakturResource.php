@@ -2,33 +2,36 @@
 
 namespace App\Filament\Resources;
 
+use Closure;
 use Filament\Forms;
+use App\Models\Stok;
 use Filament\Tables;
 use App\Models\Harga;
+use App\Models\Barang;
 use App\Models\Faktur;
+use Illuminate\Support\Str;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
 use Illuminate\Support\Facades\DB;
 use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Actions\DeleteAction;
 use Illuminate\Database\Eloquent\Builder;
-use Closure;
-use Illuminate\Support\Str;
 use App\Filament\Resources\FakturResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\FakturResource\RelationManagers;
-use Filament\Forms\Components\Hidden;
-use Filament\Forms\Components\Textarea;
 
 class FakturResource extends Resource
 {
     protected static ?string $model = Faktur::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-receipt-refund';
-    protected static ?string $navigationLabel = 'Tambah Barang Faktur';
+    protected static ?string $navigationLabel = 'Faktur';
     protected static ?string $navigationGroup = 'Pendataan';
     protected static ?int $navigationSort = 10;
 
@@ -143,12 +146,17 @@ class FakturResource extends Resource
                             Forms\Components\TextInput::make('diskon')
                                 ->required()
                                 ->numeric()
-                                ->reactive()
+                                ->lazy()
                                 ->afterStateUpdated(function (Closure $set, $state, $get) {
                                     $subtotal = $get('subtotal');
                                     $diskon = $subtotal * ($state / 100);
                                     $hasil = $subtotal - $diskon;
-                                    $set('total', Str::slug(round($hasil)));
+                                    $set('total', Str::slug(intval($hasil)));
+                                    
+                                    $total = $get('../../total_harga');
+
+                                    $hasil2 = intval($total) + $hasil;
+                                    $set('../../total_harga', Str::slug(intval($hasil2)));
                                 })
                                 ->columnSpan([
                                     'md' => 1,
@@ -158,9 +166,6 @@ class FakturResource extends Resource
                                 ->required()
                                 ->numeric()
                                 ->prefix('Rp')
-                                ->reactive()
-                                ->afterStateUpdated(fn ($state, callable $set) =>
-                                $set('../../total_harga', Str::slug($state)))
                                 ->mask(
                                     fn (TextInput\Mask $mask) => $mask
                                         ->numeric()
@@ -168,7 +173,7 @@ class FakturResource extends Resource
                                         ->decimalSeparator(',')
                                         ->thousandsSeparator('.')
                                 )
-
+                                
                                 ->columnSpan([
                                     'md' => 1,
                                     'lg' => 1
@@ -180,6 +185,14 @@ class FakturResource extends Resource
                         ->reactive()
                         ->label('Total Harga')
                         ->required()
+                        ->prefix('Rp')
+                        ->mask(
+                            fn (TextInput\Mask $mask) => $mask
+                                ->numeric()
+                                ->decimalPlaces(2)
+                                ->decimalSeparator(',')
+                                ->thousandsSeparator('.')
+                        )
                         ->columnSpan([
                             'md' => 2,
                             'lg' => 2
@@ -194,16 +207,17 @@ class FakturResource extends Resource
                         ->reactive()
                         ->afterStateUpdated(function (Closure $set, $state, $get) {
                             $total = $get('total_harga');
-                            $ppn = $total * ($state / 100);
+                            $ppn = intval($total) * (intval($state) / 100);
                             $hasil = $total + $ppn;
-                            $set('hasilppn', Str::slug($hasil));
+                            $set('hasilppn', Str::slug(intval($hasil)));
                         })
                         ->columnSpan([
                             'md' => 1,
                             'lg' => 1
                         ]),
-                    Hidden::make('hasilppn')
-                        ->reactive(),
+                    Textinput::make('hasilppn')
+                        ->reactive()
+                        ,
                     Select::make('pph')
                         ->required()
                         ->label('PPH')
@@ -225,6 +239,14 @@ class FakturResource extends Resource
                     Forms\Components\TextInput::make('total_pp')
                         ->label('Total Setelah Pajak')
                         ->required()
+                        ->prefix('Rp')
+                        ->mask(
+                            fn (TextInput\Mask $mask) => $mask
+                                ->numeric()
+                                ->decimalPlaces(2)
+                                ->decimalSeparator(',')
+                                ->thousandsSeparator('.')
+                        )
                         ->columnSpan([
                             'md' => 2,
                             'lg' => 2
@@ -238,21 +260,48 @@ class FakturResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('customer_id'),
-                Tables\Columns\TextColumn::make('kode_faktur'),
+                Tables\Columns\TextColumn::make('customer.nama_customer')
+                    ->label('Nama Customer'),
+                Tables\Columns\TextColumn::make('kode_faktur')
+                    ->label('Kode Faktur'),
                 Tables\Columns\TextColumn::make('tanggal_faktur')
+                    ->label('Tanggal Faktur')
                     ->date(),
-                Tables\Columns\TextColumn::make('ket_faktur'),
-                Tables\Columns\TextColumn::make('total_harga'),
-                Tables\Columns\TextColumn::make('ppn'),
-                Tables\Columns\TextColumn::make('pph'),
-                Tables\Columns\TextColumn::make('total_pp'),
+                Tables\Columns\TextColumn::make('ket_faktur')
+                    ->label('Keterangan'),
+                Tables\Columns\TextColumn::make('total_harga')
+                    ->money('IDR')
+                    ->label('Total'),
+                Tables\Columns\TextColumn::make('ppn')
+                    ->label('PPN'),
+                Tables\Columns\TextColumn::make('pph')
+                    ->label('PPH'),
+                Tables\Columns\TextColumn::make('total_pp')
+                    ->money('IDR')
+                    ->label('Total Setelah Pajak'),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                DeleteAction::make()
+                    ->icon('heroicon-o-trash')
+                    ->before(function ($record) {
+                        $faktur = DB::table('detail_fakturs')
+                            ->join('hargas', 'detail_fakturs.harga_id', 'hargas.id')
+                            ->where('faktur_id', $record->id)
+                            ->get();
+
+                        foreach ($faktur as $item) {
+                            $barang = Barang::find($item->barang_id);
+                            // Maka Table barang kolom stok barang dilakukan update dari (Table Barang kolom Stok) dikurangi dari (Table Stok kolom stok Masuk)
+                            $barang->update([
+                                'stok' => $barang->stok + $item->stok_keluar,
+                            ]);
+                        }
+
+                    })
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

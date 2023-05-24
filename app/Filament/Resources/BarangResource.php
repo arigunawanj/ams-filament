@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use Closure;
+use Carbon\Carbon;
 use Filament\Forms;
 use TextInput\Mask;
 use Filament\Tables;
@@ -13,7 +15,9 @@ use Filament\Forms\Components\Card;
 use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Actions\DeleteAction;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\BarangResource\Pages;
@@ -43,7 +47,7 @@ class BarangResource extends Resource
                         ->maxLength(255),
                     Forms\Components\TextInput::make('kode_barang')
                         ->required()
-                        ->unique()
+                        ->unique(ignoreRecord: true)
                         ->label('Kode Barang')
                         ->placeholder('Masukkan Kode Barang...')
                         ->maxLength(255),
@@ -61,6 +65,7 @@ class BarangResource extends Resource
                     Forms\Components\TextInput::make('stok')
                         ->required()
                         ->label('Stok')
+                      
                         ->placeholder('Masukkan Stok Barang...')
                         ->numeric(),
                     TextArea::make('ket_barang')
@@ -90,11 +95,25 @@ class BarangResource extends Resource
                 Tables\Columns\TextColumn::make('qty_barang')
                     ->label('QTY')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('stok')
+                BadgeColumn::make('stok')
                     ->label('Stok')
+                    ->color(static function ($state) :string {
+                        if($state < 1){
+                            return 'danger';
+                        } else {
+                            return 'primary';
+                        }
+                    })
                     ->sortable(),
-                Tables\Columns\TextColumn::make('tgl_kadaluarsa')
+                BadgeColumn::make('tgl_kadaluarsa')
                     ->date()
+                    ->color(static function ($state) :string {
+                        if($state < Carbon::now()->addDays(5)->toDateString()){
+                            return 'danger';
+                        } else {
+                            return 'primary';
+                        }
+                    })
                     ->label('Tanggal Kadaluarsa')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('ket_barang')

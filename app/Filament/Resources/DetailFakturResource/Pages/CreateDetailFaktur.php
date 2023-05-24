@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\DetailFakturResource\Pages;
 
-use App\Filament\Resources\DetailFakturResource;
+use App\Models\Barang;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\CreateRecord;
+use App\Filament\Resources\DetailFakturResource;
+use App\Models\Harga;
 
 class CreateDetailFaktur extends CreateRecord
 {
@@ -19,4 +21,6 @@ class CreateDetailFaktur extends CreateRecord
     {
         return 'Detail Faktur berhasil ditambahkan';
     }
+
+  
 }
