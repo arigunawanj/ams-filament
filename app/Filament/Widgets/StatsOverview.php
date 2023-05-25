@@ -25,7 +25,7 @@ class StatsOverview extends BaseWidget
             
         Card::make('Jumlah Pemasukan', function (){ 
             if(Penjualan::latest()->first() != null){
-                return 'Rp ' . number_format(Penjualan::where('tanggal_kirim', '<' ,Carbon::now()->toDateString())->sum('jumlah'), 0, '.');
+                return 'Rp ' . number_format(Penjualan::where('tanggal_kirim', '<' ,Carbon::now()->toDateString())->sum('jumlah'),0,",",".");
             } else {
                 return '';
             }

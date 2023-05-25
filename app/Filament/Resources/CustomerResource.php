@@ -22,6 +22,7 @@ class CustomerResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?string $navigationLabel = 'Kelola Customer';
     protected static ?string $navigationGroup = 'Kelola';
+    protected static ?string $recordTitleAttribute = 'nama_customer';
     public static ?string $label = 'Kelola Customer';
     protected static ?int $navigationSort = 7;
 
@@ -64,14 +65,6 @@ class CustomerResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->label('Nama Customer'),
-                Tables\Columns\TextColumn::make('alamat_customer')
-                    ->searchable()
-                    ->sortable()
-                    ->label('Alamat'),
-                Tables\Columns\TextColumn::make('telepon_customer')
-                    ->searchable()
-                    ->sortable()
-                    ->label('Telepon'),
             ])
             ->filters([
                 //
@@ -79,6 +72,7 @@ class CustomerResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

@@ -16,6 +16,7 @@ use Filament\Resources\Resource;
 use Illuminate\Support\Facades\DB;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Hidden;
+use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Textarea;
@@ -300,7 +301,11 @@ class FakturResource extends Resource
                             ]);
                         }
 
-                    })
+                    }),
+                Action::make('Cetak')
+                    ->url(fn (Faktur $record): string => route('exportbarang'))
+                    ->icon('heroicon-o-printer')
+                    ->color('warning')
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

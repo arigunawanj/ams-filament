@@ -22,6 +22,7 @@ class DistributorResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-briefcase';
     protected static ?string $navigationLabel = 'Kelola Distributor';
     protected static ?string $navigationGroup = 'Kelola';
+    protected static ?string $recordTitleAttribute = 'nama_distributor';
     protected static ?int $navigationSort = 8;
 
     public static function form(Form $form): Form
@@ -63,14 +64,6 @@ class DistributorResource extends Resource
                 ->label('Nama Distributor')
                 ->sortable()
                 ->searchable(),
-                Tables\Columns\TextColumn::make('alamat_distributor')
-                ->label('Alamat')
-                ->sortable()
-                ->searchable(),
-                Tables\Columns\TextColumn::make('telepon_distributor')
-                ->label('Telepon')
-                ->sortable()
-                ->searchable(),
             ])
             ->filters([
                 //
@@ -78,6 +71,7 @@ class DistributorResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

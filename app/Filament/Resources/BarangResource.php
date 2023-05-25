@@ -12,7 +12,7 @@ use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
-use Filament\Tables\Actions\Action;
+
 use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -33,6 +33,7 @@ class BarangResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-gift';
     protected static ?string $navigationLabel = 'Kelola Barang';
     protected static ?string $navigationGroup = 'Kelola';
+    protected static ?string $recordTitleAttribute = 'nama_barang';
     public static ?string $label = 'Kelola Barang';
     protected static ?int $navigationSort = 5;
 
@@ -117,8 +118,7 @@ class BarangResource extends Resource
                     })
                     ->label('Tanggal Kadaluarsa')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('ket_barang')
-                    ->label('Keterangan'),
+                
             ])
             ->filters([
                 //
@@ -126,8 +126,8 @@ class BarangResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 DeleteAction::make(),
-                Action::make('Cetak')
-                ->url(fn (Barang $record): string => route('exportbarang'))
+                Tables\Actions\ViewAction::make(),
+                
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
