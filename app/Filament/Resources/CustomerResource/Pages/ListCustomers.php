@@ -5,6 +5,7 @@ namespace App\Filament\Resources\CustomerResource\Pages;
 use App\Filament\Resources\CustomerResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Contracts\View\View;
 
 class ListCustomers extends ListRecords
 {
@@ -15,5 +16,10 @@ class ListCustomers extends ListRecords
         return [
             Actions\CreateAction::make(),
         ];
+    }
+
+    protected function getHeader(): View
+    {
+        return view('filament.header.customerheader');
     }
 }

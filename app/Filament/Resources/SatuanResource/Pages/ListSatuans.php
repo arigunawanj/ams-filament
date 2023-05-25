@@ -5,6 +5,7 @@ namespace App\Filament\Resources\SatuanResource\Pages;
 use App\Filament\Resources\SatuanResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Contracts\View\View;
 
 class ListSatuans extends ListRecords
 {
@@ -15,5 +16,10 @@ class ListSatuans extends ListRecords
         return [
             Actions\CreateAction::make(),
         ];
+    }
+
+    protected function getHeader(): View
+    {
+        return view('filament.header.satuanheader');
     }
 }

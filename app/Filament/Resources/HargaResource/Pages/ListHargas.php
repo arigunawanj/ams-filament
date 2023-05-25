@@ -5,6 +5,7 @@ namespace App\Filament\Resources\HargaResource\Pages;
 use App\Filament\Resources\HargaResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Contracts\View\View;
 
 class ListHargas extends ListRecords
 {
@@ -15,5 +16,10 @@ class ListHargas extends ListRecords
         return [
             Actions\CreateAction::make(),
         ];
+    }
+
+    protected function getHeader(): View
+    {
+        return view('filament.header.hargaheader');
     }
 }

@@ -5,6 +5,7 @@ namespace App\Filament\Resources\BarangResource\Pages;
 use App\Filament\Resources\BarangResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Contracts\View\View;
 
 class ListBarangs extends ListRecords
 {
@@ -14,6 +15,7 @@ class ListBarangs extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+
         ];
     }
 
@@ -22,5 +24,10 @@ class ListBarangs extends ListRecords
         return [
             BarangResource\Widgets\BarangOverview::class,
         ];
-    }   
+    }
+
+    protected function getHeader(): View
+    {
+        return view('filament.header.barangheader');
+    }
 }

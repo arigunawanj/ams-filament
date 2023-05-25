@@ -2,16 +2,19 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PenjualanResource\Pages;
-use App\Filament\Resources\PenjualanResource\RelationManagers;
-use App\Models\Penjualan;
 use Filament\Forms;
-use Filament\Resources\Form;
-use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
+use App\Models\Penjualan;
+use Filament\Resources\Form;
+use Filament\Resources\Table;
+use Filament\Resources\Resource;
+use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Columns\BooleanColumn;
+use App\Filament\Resources\PenjualanResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\PenjualanResource\RelationManagers;
+use Filament\Tables\Columns\BadgeColumn;
 
 class PenjualanResource extends Resource
 {
@@ -35,7 +38,25 @@ class PenjualanResource extends Resource
     {
         return $table
             ->columns([
-                //
+                BadgeColumn::make('kode')
+                ->label('Kode Faktur')
+                ->searchable(),
+                TextColumn::make('customer.nama_customer')
+                ->label('Nama Customer')
+                ->searchable(),
+                TextColumn::make('tanggal_kirim')
+                ->label('Tanggal')
+                ->date()
+                ->searchable(),
+                TextColumn::make('jumlah')
+                ->label('Jumlah')
+                ->money('IDR')
+                ->searchable(),
+                TextColumn::make('keterangan')
+                ->label('Keterangan')
+                ->placeholder('-')
+                ->searchable(),
+                BooleanColumn::make('status'),
             ])
             ->filters([
                 //

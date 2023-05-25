@@ -12,6 +12,7 @@ use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -125,6 +126,8 @@ class BarangResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 DeleteAction::make(),
+                Action::make('Cetak')
+                ->url(fn (Barang $record): string => route('exportbarang'))
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

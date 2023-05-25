@@ -74,7 +74,6 @@ class SetoranResource extends Resource
                     Textarea::make('ket_dep')
                         ->label('Keterangan')
                         ->columnSpan(2)
-                        ->required()
                         ->maxLength(255),
                 ])->columns(2)
             ]);

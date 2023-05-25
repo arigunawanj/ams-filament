@@ -14,7 +14,14 @@ class BarangOverview extends BaseWidget
     protected function getCards(): array
     {
         return [
-            Card::make('Barang Kadaluarsa', Barang::where('tgl_kadaluarsa', '<', Carbon::now()->addDays(5)->toDateString())->count()),
+            Card::make('Barang Kadaluarsa', function (){ 
+                if(Barang::latest()->first() != null){
+                    return Barang::where('tgl_kadaluarsa', '<', Carbon::now()->addDays(5)->toDateString())->count();
+                } else {
+                    return '';
+                }  
+            }),
+            
             Card::make('Stok Habis', Barang::where('stok', 0)->count()),
         ];
     }

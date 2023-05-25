@@ -17,5 +17,12 @@ class ListStoks extends ListRecords
         ];
     }
 
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            StokResource\Widgets\StokOverview::class,
+        ];
+    }
+
     
 }

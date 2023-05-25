@@ -68,7 +68,6 @@ class FakturResource extends Resource
                             'lg' => 1
                         ]),
                     Textarea::make('ket_faktur')
-                        ->required()
                         ->label('Keterangan')
                         ->maxLength(255)
                         ->columnSpan([

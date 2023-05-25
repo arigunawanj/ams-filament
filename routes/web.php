@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ExportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return redirect('/admin');
 });
+
+// EXPORT
+
+Route::get('admin/satuans/export', [ExportController::class, 'satuanExport'])->name('exportsatuan');
+Route::get('admin/barangs/export', [ExportController::class, 'barangExport'])->name('exportbarang');
+Route::get('admin/hargas/export', [ExportController::class, 'hargaExport'])->name('exportharga');
+Route::get('admin/customers/export', [ExportController::class, 'customerExport'])->name('exportcustomer');
+Route::get('admin/distributors/export', [ExportController::class, 'distributorExport'])->name('exportdistributor');

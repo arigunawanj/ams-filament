@@ -6,6 +6,7 @@ use App\Models\Harga;
 use App\Models\Barang;
 use Filament\Pages\Actions;
 use App\Filament\Resources\FakturResource;
+use App\Models\Penjualan;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\DB;
 
@@ -38,6 +39,14 @@ class CreateFaktur extends CreateRecord
             ]);
         }
 
-
+        Penjualan::create([
+            'customer_id' => $this->record->customer_id,
+            'tanggal_kirim' => $this->record->tanggal_faktur,
+            'kode' => $this->record->kode_faktur,
+            'jumlah' => $this->record->total_pp,
+            'keterangan' => $this->record->ket_faktur,
+            'status' => 0
+        ]);
     }
+    
 }
