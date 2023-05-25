@@ -3,6 +3,8 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Barang;
+use App\Models\Penjualan;
+use Carbon\Carbon;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Card;
 use Illuminate\Support\Facades\DB;
@@ -13,19 +15,28 @@ class StatsOverview extends BaseWidget
     protected function getCards(): array
     {
         return [
-        Card::make('Bounce rate', '21%')
-            ->description('7% increase')
-            ->descriptionIcon('heroicon-s-trending-down')
-            ->color('danger'),
-        Card::make('Average time on page', '3:12')
-            ->description('3% increase')
-            ->descriptionIcon('heroicon-s-trending-up')
-            ->color('success'),
-        Card::make('Stok Barang', Barang::all()->count())
-            ->description('32k increase')
-            ->descriptionIcon('heroicon-s-trending-up')
-            ->chart([12,13,14,15])
-            ->color('success'),
+        Card::make('Penjualan Lunas', function (){ 
+            if(Penjualan::latest()->first() != null){
+                return Penjualan::where('status', 1)->count() . ' Lunas';
+            } else {
+                return '';
+            }  
+        }),
+            
+        Card::make('Jumlah Pemasukan', function (){ 
+            if(Penjualan::latest()->first() != null){
+                return 'Rp ' . number_format(Penjualan::where('tanggal_kirim', '<' ,Carbon::now()->toDateString())->sum('jumlah'), 0, '.');
+            } else {
+                return '';
+            }
+        }),
+        Card::make('Penjualan Belum Lunas', function (){ 
+            if(Penjualan::latest()->first() != null){
+                return Penjualan::where('status', 0)->count() . ' Belum Lunas';
+            } else {
+                return '';
+            }  
+        }),
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Barang;
+use App\Models\Penjualan;
 use Flowframe\Trend\Trend;
 use Flowframe\Trend\TrendValue;
 use Filament\Widgets\LineChartWidget;
@@ -10,12 +11,12 @@ use Filament\Widgets\LineChartWidget;
 
 class DataChart extends LineChartWidget
 {
-    protected static ?string $heading = 'Data Barang';
+    protected static ?string $heading = 'Data Penjualan';
     protected static ?int $sort = 2;
 
     protected function getData(): array
     {
-        $data = Trend::model(Barang::class)
+        $data = Trend::model(Penjualan::class)
         ->between(
             start: now()->startOfYear(),
             end: now()->endOfYear(),
@@ -26,7 +27,7 @@ class DataChart extends LineChartWidget
     return [
         'datasets' => [
             [
-                'label' => 'Jumlah Barang',
+                'label' => 'Jumlah Masuk',
                 'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
             ],
         ],
