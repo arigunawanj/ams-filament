@@ -55,6 +55,7 @@ class FakturResource extends Resource
                     TextInput::make('kode_faktur')
                         ->required()
                         ->label('Kode Faktur')
+                        ->unique(ignoreRecord: true)
                         ->maxLength(255)
                         ->columnSpan([
                             'sm' => 1,
