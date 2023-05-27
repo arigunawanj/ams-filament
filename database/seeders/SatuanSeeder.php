@@ -23,14 +23,26 @@ class SatuanSeeder extends Seeder
         Satuan::truncate();
         Schema::enableForeignKeyConstraints();
 
-        $faker = Faker::create('id_ID');
-        for ($i = 1; $i <= 50; $i++) {
+        $satuan = [
+            ['nama' => 'Box'],
+            ['nama' => 'Kit'],
+            ['nama' => 'Vial'],
+            ['nama' => 'Liter'],
+            ['nama' => 'Set'],
+            ['nama' => 'Pcs'],
+            ['nama' => 'Botol'],
+            ['nama' => 'Unit'],
+            ['nama' => 'Roll'],
+            ['nama' => 'Pak'],
+            ['nama' => 'Gln'],
+            ['nama' => 'Psg'],
+            ['nama' => 'Dus'],
+            ['nama' => 'Lbr'],
+        ];
 
-            // insert data ke table pegawai menggunakan Faker
-            DB::table('satuans')->insert([
-                'nama_satuan' => $faker->name,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+        foreach ($satuan as $item) {
+            Satuan::create([
+                'nama_satuan' => $item['nama']
             ]);
         }
     }
