@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\FakturResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\FakturResource\RelationManagers;
+use Filament\Tables\Columns\BadgeColumn;
 
 class FakturResource extends Resource
 {
@@ -152,7 +153,7 @@ class FakturResource extends Resource
                                     $diskon = $subtotal * ($state / 100);
                                     $hasil = $subtotal - $diskon;
                                     $set('total', Str::slug(intval($hasil)));
-                                    
+
                                     $total = $get('../../total_harga');
 
                                     $hasil2 = intval($total) + $hasil;
@@ -173,7 +174,7 @@ class FakturResource extends Resource
                                         ->decimalSeparator(',')
                                         ->thousandsSeparator('.')
                                 )
-                                
+
                                 ->columnSpan([
                                     'md' => 1,
                                     'lg' => 1
@@ -260,17 +261,30 @@ class FakturResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('customer.nama_customer')
-                    ->label('Nama Customer'),
-                Tables\Columns\TextColumn::make('kode_faktur')
+                BadgeColumn::make('kode_faktur')
+                    ->copyable()
+                    ->color('warning')
+                    ->copyMessage('Berhasil Disalin')
                     ->label('Kode Faktur'),
-                Tables\Columns\TextColumn::make('tanggal_faktur')
+                Tables\Columns\TextColumn::make('customer.nama_customer')
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
+                    ->label('Nama Customer'),
+                BadgeColumn::make('tanggal_faktur')
                     ->label('Tanggal Faktur')
+                    ->color('primary')
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->date(),
                 Tables\Columns\TextColumn::make('ket_faktur')
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
+                    ->placeholder('-')
                     ->label('Keterangan'),
                 Tables\Columns\TextColumn::make('total_harga')
                     ->money('IDR')
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->label('Total'),
                 Tables\Columns\TextColumn::make('ppn')
                     ->label('PPN'),
@@ -278,6 +292,8 @@ class FakturResource extends Resource
                     ->label('PPH'),
                 Tables\Columns\TextColumn::make('total_pp')
                     ->money('IDR')
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->label('Total Setelah Pajak'),
             ])
             ->filters([
@@ -300,7 +316,6 @@ class FakturResource extends Resource
                                 'stok' => $barang->stok + $item->stok_keluar,
                             ]);
                         }
-
                     }),
                 Action::make('Cetak')
                     ->url(fn (Faktur $record): string => route('exportbarang'))

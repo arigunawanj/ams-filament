@@ -51,23 +51,26 @@ class RoleResource extends Resource
             ->columns([
                 TextColumn::make('No')->getStateUsing(
                     static function (stdClass $rowLoop, HasTable $livewire): string {
-                        return (string) (
-                            $rowLoop->iteration +
-                            ($livewire->tableRecordsPerPage * (
-                                $livewire->page - 1
+                        return (string) ($rowLoop->iteration +
+                            ($livewire->tableRecordsPerPage * ($livewire->page - 1
                             ))
                         );
                     }
                 ),
                 TextColumn::make('name')
                     ->searchable()
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->sortable()
                     ->label('Nama Role'),
                 TextColumn::make('permissions.name')
                     ->searchable()
+                    ->copyable()
+                    ->placeholder('-')
+                    ->copyMessage('Berhasil Disalin')
                     ->sortable()
                     ->label('Ijin'),
-               
+
 
             ])
             ->filters([

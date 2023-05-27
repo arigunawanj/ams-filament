@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\CustomerResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\CustomerResource\RelationManagers;
+use Filament\Tables\Columns\BadgeColumn;
 
 class CustomerResource extends Resource
 {
@@ -57,12 +58,17 @@ class CustomerResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('kode_customer')
+                BadgeColumn::make('kode_customer')
                     ->searchable()
+                    ->color('warning')
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->sortable()
                     ->label('Kode Customer'),
                 Tables\Columns\TextColumn::make('nama_customer')
                     ->searchable()
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->sortable()
                     ->label('Nama Customer'),
             ])

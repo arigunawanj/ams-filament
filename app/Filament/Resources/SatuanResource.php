@@ -44,12 +44,14 @@ class SatuanResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id')
-                ->sortable()
-                ->label('ID'),
+                    ->sortable()
+                    ->label('ID'),
                 Tables\Columns\TextColumn::make('nama_satuan')
-                ->searchable()
-                ->label('Nama Satuan')
-                ->sortable(),
+                    ->searchable()
+                    ->copyable()
+                    ->copyMessage('Berhasil disalin')
+                    ->label('Nama Satuan')
+                    ->sortable(),
             ])
             ->filters([
                 //
@@ -62,14 +64,14 @@ class SatuanResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -77,5 +79,5 @@ class SatuanResource extends Resource
             'create' => Pages\CreateSatuan::route('/create'),
             'edit' => Pages\EditSatuan::route('/{record}/edit'),
         ];
-    }    
+    }
 }

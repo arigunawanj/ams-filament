@@ -37,7 +37,7 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Card::make([
-                    
+
                     TextInput::make('name')
                         ->required()
                         ->maxLength(255)
@@ -50,9 +50,9 @@ class UserResource extends Resource
                         ->unique(ignoreRecord: true),
                     TextInput::make('password')
                         ->password()
-                        ->dehydrateStateUsing(static fn (null|string $state):null|string => filled($state) ? Hash::make($state): null)
-                        ->required(static fn(Page $livewire):string => $livewire instanceof CreateUser,)
-                        ->dehydrated(static fn(null|string $state): bool => filled($state))
+                        ->dehydrateStateUsing(static fn (null|string $state): null|string => filled($state) ? Hash::make($state) : null)
+                        ->required(static fn (Page $livewire): string => $livewire instanceof CreateUser,)
+                        ->dehydrated(static fn (null|string $state): bool => filled($state))
                         ->label(
                             static fn (Page $livewire): string => ($livewire instanceof EditUser) ? 'Ganti Password' : 'Masukkan Password'
                         ),
@@ -70,24 +70,28 @@ class UserResource extends Resource
             ->columns([
                 TextColumn::make('No')->getStateUsing(
                     static function (stdClass $rowLoop, HasTable $livewire): string {
-                        return (string) (
-                            $rowLoop->iteration +
-                            ($livewire->tableRecordsPerPage * (
-                                $livewire->page - 1
+                        return (string) ($rowLoop->iteration +
+                            ($livewire->tableRecordsPerPage * ($livewire->page - 1
                             ))
                         );
                     }
                 ),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->sortable()
                     ->label('Nama'),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable()
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->sortable()
                     ->label('Email'),
                 TextColumn::make('roles.name')
                     ->label('Role')
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->sortable()

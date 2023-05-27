@@ -14,6 +14,7 @@ use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Columns\BadgeColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -55,15 +56,24 @@ class StokResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('barang.nama_barang')
                     ->label('Nama Barang')
+                    ->copyable()
+                    ->copyMessage('Berhasil disalin')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('distributor.nama_distributor')
                     ->label('Nama Distributor')
+                    ->copyable()
+                    ->copyMessage('Berhasil disalin')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('stok_masuk')
+                BadgeColumn::make('stok_masuk')
                     ->label('Jumlah Masuk')
+                    ->copyable()
+                    ->color('primary')
+                    ->copyMessage('Berhasil disalin')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tanggal_masuk')
                     ->date()
+                    ->copyable()
+                    ->copyMessage('Berhasil disalin')
                     ->label('Tanggal masuk')
                     ->searchable(),
             ])

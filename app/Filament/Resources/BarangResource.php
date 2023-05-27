@@ -67,7 +67,7 @@ class BarangResource extends Resource
                     Forms\Components\TextInput::make('stok')
                         ->required()
                         ->label('Stok')
-                      
+
                         ->placeholder('Masukkan Stok Barang...')
                         ->numeric(),
                     TextArea::make('ket_barang')
@@ -83,24 +83,35 @@ class BarangResource extends Resource
         return $table
 
             ->columns([
-                Tables\Columns\TextColumn::make('kode_barang')
+                BadgeColumn::make('kode_barang')
                     ->searchable()
+                    ->copyable()
+                    ->color('warning')
+                    ->copyMessage('Berhasil Disalin')
                     ->label('Kode Barang')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('nama_barang')
                     ->searchable()
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->label('Nama Barang')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('satuan.nama_satuan')
                     ->label('Satuan')
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('qty_barang')
                     ->label('QTY')
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->sortable(),
                 BadgeColumn::make('stok')
                     ->label('Stok')
-                    ->color(static function ($state) :string {
-                        if($state < 1){
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
+                    ->color(static function ($state): string {
+                        if ($state < 1) {
                             return 'danger';
                         } else {
                             return 'primary';
@@ -109,8 +120,10 @@ class BarangResource extends Resource
                     ->sortable(),
                 BadgeColumn::make('tgl_kadaluarsa')
                     ->date()
-                    ->color(static function ($state) :string {
-                        if($state < Carbon::now()->addDays(5)->toDateString()){
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
+                    ->color(static function ($state): string {
+                        if ($state < Carbon::now()->addDays(5)->toDateString()) {
                             return 'danger';
                         } else {
                             return 'primary';
@@ -118,7 +131,7 @@ class BarangResource extends Resource
                     })
                     ->label('Tanggal Kadaluarsa')
                     ->sortable(),
-                
+
             ])
             ->filters([
                 //
@@ -127,7 +140,7 @@ class BarangResource extends Resource
                 Tables\Actions\EditAction::make(),
                 DeleteAction::make(),
                 Tables\Actions\ViewAction::make(),
-                
+
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

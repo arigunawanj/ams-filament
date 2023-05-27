@@ -36,9 +36,9 @@ class PenjualanResource extends Resource
         return $form
             ->schema([
                 Card::make([
-                Toggle::make('status')
-                    ->onIcon('heroicon-s-lightning-bolt')
-                    ->offIcon('heroicon-s-user')
+                    Toggle::make('status')
+                        ->onIcon('heroicon-s-lightning-bolt')
+                        ->offIcon('heroicon-s-user')
                 ])
             ]);
     }
@@ -49,20 +49,30 @@ class PenjualanResource extends Resource
             ->columns([
                 BadgeColumn::make('kode')
                     ->label('Kode Faktur')
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->searchable(),
                 TextColumn::make('customer.nama_customer')
                     ->label('Nama Customer')
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->searchable(),
                 TextColumn::make('tanggal_kirim')
                     ->label('Tanggal')
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->date()
                     ->searchable(),
                 TextColumn::make('jumlah')
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->label('Jumlah')
                     ->money('IDR')
                     ->searchable(),
                 TextColumn::make('keterangan')
                     ->label('Keterangan')
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->placeholder('-')
                     ->searchable(),
                 ToggleColumn::make('status')

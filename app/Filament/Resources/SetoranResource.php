@@ -85,24 +85,35 @@ class SetoranResource extends Resource
             ->columns([
                 BadgeColumn::make('kode_dep')
                     ->searchable()
+                    ->copyable()
+                    ->color('primary')
+                    ->copyMessage('Berhasil Disalin')
                     ->sortable()
                     ->label('Kode Setoran'),
                 Tables\Columns\TextColumn::make('customer.nama_customer')
                     ->searchable()
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->sortable()
                     ->label('Nama Customer'),
                 Tables\Columns\TextColumn::make('tanggal_dep')
                     ->searchable()
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->sortable()
                     ->label('Tanggal Setoran')
                     ->date(),
                 Tables\Columns\TextColumn::make('jumlah_masuk')
                     ->searchable()
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->sortable()
                     ->label('Jumlah Masuk')
                     ->money('IDR'),
                 Tables\Columns\TextColumn::make('jumlah_keluar')
                     ->searchable()
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->sortable()
                     ->label('Jumlah Keluar')
                     ->money('IDR'),
@@ -111,7 +122,10 @@ class SetoranResource extends Resource
                     ->placeholder('-'),
                 Tables\Columns\TextColumn::make('ket_dep')
                     ->searchable()
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->sortable()
+                    ->placeholder('-')
                     ->label('Keterangan'),
             ])
             ->filters([

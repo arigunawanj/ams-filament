@@ -16,6 +16,7 @@ use App\Filament\Resources\HargaResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\HargaResource\RelationManagers;
 use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Columns\BadgeColumn;
 
 class HargaResource extends Resource
 {
@@ -73,15 +74,24 @@ class HargaResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('kode_harga')
+                BadgeColumn::make('kode_harga')
+                    ->copyable()
+                    ->color('warning')
+                    ->copyMessage('Berhasil Disalin')
                     ->label('Kode Harga'),
                 Tables\Columns\TextColumn::make('barang.nama_barang')
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->label('Nama Barang'),
                 Tables\Columns\TextColumn::make('harga')
                     ->money('IDR')
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->label('Harga Jual'),
                 Tables\Columns\TextColumn::make('harga_netto')
                     ->money('IDR')
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->label('Harga Netto'),
             ])
             ->filters([
@@ -89,7 +99,8 @@ class HargaResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                DeleteAction::make()
+                DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

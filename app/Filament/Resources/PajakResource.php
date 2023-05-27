@@ -9,11 +9,12 @@ use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\BadgeColumn;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\PajakResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PajakResource\RelationManagers;
-use Filament\Forms\Components\Select;
 
 class PajakResource extends Resource
 {
@@ -59,19 +60,32 @@ class PajakResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('customer.nama_customer')
-                    ->label('Nama Customer'),
-                Tables\Columns\TextColumn::make('kode_laporan')
+                BadgeColumn::make('kode_laporan')
+                    ->copyable()
+                    ->color('primary')
+                    ->copyMessage('Berhasil Disalin')
                     ->label('Kode Laporan'),
+                Tables\Columns\TextColumn::make('customer.nama_customer')
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
+                    ->label('Nama Customer'),
                 Tables\Columns\TextColumn::make('tanggal_rep')
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->date()
                     ->label('Tanggal laporan'),
                 Tables\Columns\TextColumn::make('no_fakpajak')
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->label('No. Faktur Pajak'),
                 Tables\Columns\TextColumn::make('tanggal_upload')
                     ->date()
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->label('Tanggal Upload'),
                 Tables\Columns\TextColumn::make('ket_rep')
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->placeholder('-')
                     ->label('Keterangan'),
             ])

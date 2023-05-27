@@ -35,8 +35,8 @@ class PermissionResource extends Resource
             ->schema([
                 Card::make([
                     TextInput::make('name')
-                    ->required()
-                    ->unique(ignoreRecord: true)
+                        ->required()
+                        ->unique(ignoreRecord: true)
                 ])
             ]);
     }
@@ -47,16 +47,16 @@ class PermissionResource extends Resource
             ->columns([
                 TextColumn::make('No')->getStateUsing(
                     static function (stdClass $rowLoop, HasTable $livewire): string {
-                        return (string) (
-                            $rowLoop->iteration +
-                            ($livewire->tableRecordsPerPage * (
-                                $livewire->page - 1
+                        return (string) ($rowLoop->iteration +
+                            ($livewire->tableRecordsPerPage * ($livewire->page - 1
                             ))
                         );
                     }
                 ),
                 TextColumn::make('name')
                     ->searchable()
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->sortable()
                     ->label('Jenis Ijin'),
                 TextColumn::make('created_at')
@@ -79,14 +79,14 @@ class PermissionResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -94,5 +94,5 @@ class PermissionResource extends Resource
             'create' => Pages\CreatePermission::route('/create'),
             'edit' => Pages\EditPermission::route('/{record}/edit'),
         ];
-    }    
+    }
 }

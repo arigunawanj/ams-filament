@@ -12,6 +12,7 @@ use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Columns\BadgeColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -39,15 +40,15 @@ class DistributorResource extends Resource
                         ->required()
                         ->label('Nama Distributor')
                         ->maxLength(255),
-                        Forms\Components\TextInput::make('telepon_distributor')
+                    Forms\Components\TextInput::make('telepon_distributor')
                         ->tel()
                         ->label('Telepon')
                         ->required()
                         ->maxLength(255),
-                        Forms\Components\Textarea::make('alamat_distributor')
-                            ->required()
-                            ->label('Alamat')
-                            ->maxLength(65535),
+                    Forms\Components\Textarea::make('alamat_distributor')
+                        ->required()
+                        ->label('Alamat')
+                        ->maxLength(65535),
                 ])->columns(2)
             ]);
     }
@@ -56,14 +57,19 @@ class DistributorResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('kode_distributor')
-                ->label('Kode Distributor')
-                ->sortable()
-                ->searchable(),
+                BadgeColumn::make('kode_distributor')
+                    ->label('Kode Distributor')
+                    ->copyable()
+                    ->color('warning')
+                    ->copyMessage('Berhasil Disalin')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('nama_distributor')
-                ->label('Nama Distributor')
-                ->sortable()
-                ->searchable(),
+                    ->label('Nama Distributor')
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
+                    ->sortable()
+                    ->searchable(),
             ])
             ->filters([
                 //
@@ -77,14 +83,14 @@ class DistributorResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -92,5 +98,5 @@ class DistributorResource extends Resource
             'create' => Pages\CreateDistributor::route('/create'),
             'edit' => Pages\EditDistributor::route('/{record}/edit'),
         ];
-    }    
+    }
 }

@@ -51,12 +51,18 @@ class NotesResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('judul')
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->searchable(),
                 TextColumn::make('tanggal')
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->date(),
                 TextColumn::make('isi')
                     ->html(),
                 TextColumn::make('user.name')
+                    ->copyable()
+                    ->copyMessage('Berhasil Disalin')
                     ->label('Pembuat'),
             ])
             ->filters([
