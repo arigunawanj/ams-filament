@@ -16,4 +16,13 @@ class ListNotes extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    protected function getTableContentGrid(): ?array
+{
+    return [
+        'md' => 2,
+        'lg' => 3,
+        'xl' => 3,
+    ];
+}
 }

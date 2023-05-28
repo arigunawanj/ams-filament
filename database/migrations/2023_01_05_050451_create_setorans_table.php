@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('jumlah_masuk');
             $table->integer('jumlah_keluar');
             $table->string('foto_dep')->nullable();
-            $table->string('ket_dep');
+            $table->string('ket_dep')->nullable();
             $table->timestamps();
         });
     }

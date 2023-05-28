@@ -93,10 +93,10 @@ class CetakController extends Controller
             $penjualan = Penjualan::all()->sortBy('tanggal_kirim');
 
             // Menghitung jumlah status Lunas
-            $lunas = DB::table('penjualans')->select('status')->where('status', 'Lunas')->count();
+            $lunas = DB::table('penjualans')->select('status')->where('status', 1)->count();
 
              // Menghitung jumlah status Belum Lunas
-            $belum = DB::table('penjualans')->select('status')->where('status', 'Belum Lunas')->count();
+            $belum = DB::table('penjualans')->select('status')->where('status', 0)->count();
             
             // Menjumlahkan tabel penjualan pada kolom harga jumlah
             $pertahun = DB::table('penjualans')->select('jumlah')->sum('jumlah');
@@ -113,10 +113,10 @@ class CetakController extends Controller
             $year = DB::table('penjualans')->where(DB::raw('YEAR(tanggal_kirim)'), $id)->get();
     
             // Menghitung jumlah Status Lunas
-            $lunas = DB::table('penjualans')->select('status')->where('status', 'Lunas')->where(DB::raw('YEAR(tanggal_kirim)'), $id)->count();
+            $lunas = DB::table('penjualans')->select('status')->where('status', 1)->where(DB::raw('YEAR(tanggal_kirim)'), $id)->count();
     
             // Menghitung jumlah Status Belum Lunas
-            $belum = DB::table('penjualans')->select('status')->where('status', 'Belum Lunas')->where(DB::raw('YEAR(tanggal_kirim)'), $id)->count();
+            $belum = DB::table('penjualans')->select('status')->where('status', 0)->where(DB::raw('YEAR(tanggal_kirim)'), $id)->count();
     
             // Menjumlahkan tabel penjualan pada kolom harga jumlah
             $pertahun = DB::table('penjualans')->where(DB::raw('YEAR(tanggal_kirim)'), $id)->sum('jumlah');

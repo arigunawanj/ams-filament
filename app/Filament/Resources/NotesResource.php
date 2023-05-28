@@ -9,14 +9,20 @@ use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
+use Filament\Tables\Filters\Filter;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\Layout\Grid;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\RichEditor;
+use Filament\Tables\Columns\Layout\Panel;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\MarkdownEditor;
 use App\Filament\Resources\NotesResource\Pages;
@@ -50,23 +56,36 @@ class NotesResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('judul')
-                    ->copyable()
-                    ->copyMessage('Berhasil Disalin')
-                    ->searchable(),
-                TextColumn::make('tanggal')
-                    ->copyable()
-                    ->copyMessage('Berhasil Disalin')
-                    ->date(),
-                TextColumn::make('isi')
-                    ->html(),
-                TextColumn::make('user.name')
-                    ->copyable()
-                    ->copyMessage('Berhasil Disalin')
-                    ->label('Pembuat'),
+                Grid::make([
+                    'lg' => 1,
+                    '2xl' => 1,
+                ])->schema([
+                    Split::make([
+                        
+                            Panel::make([
+                                TextColumn::make('judul')
+                                    ->copyable()
+                                    ->copyMessage('Berhasil Disalin')
+                                    ->searchable(),
+                                TextColumn::make('tanggal')
+                                    ->copyable()
+                                    ->copyMessage('Berhasil Disalin')
+                                    ->icon('heroicon-s-calendar')
+                                    ->date(),
+                                    TextColumn::make('isi')
+                                        ->html(),
+                                    TextColumn::make('user.name')
+                                        ->copyable()
+                                        ->icon('heroicon-s-user')
+                                        ->copyMessage('Berhasil Disalin')
+                                        ->label('Pembuat'),
+                            ]),
+                      
+                    ])
+                ])
             ])
             ->filters([
-                //
+                Filter::make('judul')->label('Judul')
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

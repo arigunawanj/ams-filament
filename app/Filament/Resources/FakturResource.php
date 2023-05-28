@@ -182,6 +182,7 @@ class FakturResource extends Resource
                                 ]),
                         ])
                         ->columns(2)
+                        ->label('Barang')
                         ->columnSpan(2),
                     Forms\Components\TextInput::make('total_harga')
                         ->reactive()
