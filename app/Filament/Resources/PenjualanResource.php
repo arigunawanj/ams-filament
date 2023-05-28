@@ -76,6 +76,7 @@ class PenjualanResource extends Resource
                     ->placeholder('-')
                     ->searchable(),
                 ToggleColumn::make('status')
+                    ->label('Lunas')
                     ->onIcon('heroicon-s-check-circle')
                     ->offIcon('heroicon-s-x-circle')
             ])

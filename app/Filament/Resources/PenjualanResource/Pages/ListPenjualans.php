@@ -5,6 +5,7 @@ namespace App\Filament\Resources\PenjualanResource\Pages;
 use App\Filament\Resources\PenjualanResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Contracts\View\View;
 
 class ListPenjualans extends ListRecords
 {
@@ -15,5 +16,10 @@ class ListPenjualans extends ListRecords
         return [
             // Actions\CreateAction::make(),
         ];
+    }
+
+    protected function getHeader(): View
+    {
+        return view('filament.header.penjualanheader');
     }
 }

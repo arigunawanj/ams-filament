@@ -98,11 +98,16 @@
                             @endphp
                             <td>{{ $tgl }}</td>
                             <td>{{ number_format($item->jumlah, 0, ',', '.') }}</td>
-                            <td>{{ $item->keterangan }}</td>
-                            @if ($item->status == 'Belum Lunas')
-                                <td class="text-warna">{{ $item->status }}</td>
+                            @if ($item->keterangan == null)
+                                <td>-</td>
+                            @else
+                                <td>{{ $item->keterangan }}</td>
+                                
+                            @endif
+                            @if ($item->status == 0)
+                                <td class="text-warna">Belum Lunas</td>
                             @else 
-                                <td>{{ $item->status }}</td>
+                                <td>Lunas</td>
                             @endif
                         </tr>
                         

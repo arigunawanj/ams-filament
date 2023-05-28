@@ -11,6 +11,7 @@ use App\Models\Customer;
 use App\Models\Penjualan;
 use App\Models\Distributor;
 use App\Models\DetailProfil;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
@@ -190,40 +191,31 @@ class CetakController extends Controller
 
     public function printFaktur($id)
     {
-        /*
-            * Tabel Barang akan dipilih semua kemudian digabungkan dengan Tabel satuan dimana tabel barang kolom satuan.id harus sama
-            * kemudian digabungkan lagi dengan Tabel detail_faktur dimana tabel barang kolom barang.id harus sama
-            * kemudian digabungkan lagi dengan Tabel faktur dimana tabel detail_faktur kolom kode_faktur harus sama
-            * kemudian digabungkan lagi dengan Tabel customer dimana tabel faktur kolom customer.id harus sama
-            * Dengan kondisi tabel faktur dengan kolom kode_faktur sama dengan data kode_faktur($id) yang diambil
-            * Setelah itu data diambil
-        */
-        $faktur = DB::table('barangs')->select('*')
-        ->join('satuans', 'barangs.satuan_id', 'satuans.id')
-        ->join('detail_fakturs', 'detail_fakturs.barang_id', 'barangs.id')
-        ->join('fakturs', 'detail_fakturs.kode_faktur', 'fakturs.kode_faktur')
-        ->join('customers', 'fakturs.customer_id', 'customers.id')
-        ->where('fakturs.kode_faktur', $id)->get();
-        
-         /*
-            * Tabel Barang akan dipilih semua kemudian digabungkan dengan Tabel satuan dimana tabel barang kolom satuan.id harus sama
-            * kemudian digabungkan lagi dengan Tabel detail_faktur dimana tabel barang kolom barang.id harus sama
-            * kemudian digabungkan lagi dengan Tabel faktur dimana tabel detail_faktur kolom kode_faktur harus sama
-            * kemudian digabungkan lagi dengan Tabel customer dimana tabel faktur kolom customer.id harus sama
-            * Dengan kondisi tabel faktur dengan kolom kode_faktur sama dengan data kode_faktur($id) yang diambil
-            * Setelah itu data diambil dan berupa unique
-        */
-        $kodenama = DB::table('barangs')->select('*')->join('satuans', 'barangs.satuan_id', 'satuans.id')
-        ->join('detail_fakturs', 'detail_fakturs.barang_id', 'barangs.id')
-        ->join('fakturs', 'detail_fakturs.kode_faktur', 'fakturs.kode_faktur')
-        ->join('customers', 'fakturs.customer_id', 'customers.id')
-        ->where('fakturs.kode_faktur', $id)->get()->unique('kode_faktur');
+        $faktur = DB::table('detail_fakturs')
+                  ->join('hargas', 'detail_fakturs.harga_id', 'hargas.id')
+                  ->join('barangs', 'hargas.barang_id', 'barangs.id')
+                  ->join('satuans', 'barangs.satuan_id', 'satuans.id')
+                  ->join('fakturs', 'detail_fakturs.faktur_id', 'fakturs.id')
+                  ->join('customers', 'fakturs.customer_id', 'customers.id')
+                  ->where('fakturs.id', $id)
+                  ->get();
+
+        $kodenama = DB::table('detail_fakturs')
+                    ->join('hargas', 'detail_fakturs.harga_id', 'hargas.id')
+                    ->join('barangs', 'hargas.barang_id', 'barangs.id')
+                    ->join('satuans', 'barangs.satuan_id', 'satuans.id')
+                    ->join('fakturs', 'detail_fakturs.faktur_id', 'fakturs.id')
+                    ->join('customers', 'fakturs.customer_id', 'customers.id')
+                    ->where('fakturs.id', $id)
+                    ->get()
+                    ->unique('kode_faktur');
+
 
         // Menampilkan data pada tabel faktur dengan kondisi kode faktur harus sama dengan kode faktur yang diambil
         $ppn = DB::table('fakturs')->where('kode_faktur', $id)->get();
 
         // Mengambil detail profil dengan user_id dengan ID yang sudah login
-        $profil = DetailProfil::where('user_id', Auth::user()->id)->get();
+        $profil = User::where('id', Auth::user()->id)->get();
         
         // PDF akan ditampilkan dengan membawa data yang sudah dideklarasikan
         $pdf = Pdf::loadView('print.fakturprint', ['faktur' => $faktur, 'kodenama' => $kodenama, 'profil' => $profil]);

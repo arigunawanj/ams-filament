@@ -178,9 +178,9 @@
                             <td>{{ $item->nama_barang }}</td>
                             <td>{{ $item->nama_satuan }}</td>
                             <td>{{ $item->stok_keluar }}</td>
-                            <td>{{ number_format($item->harga_jual, 0, ',', '.') }}</td>
+                            <td>{{ number_format($item->harga, 0, ',', '.') }}</td>
                             <td>{{ $item->diskon }}</td>
-                            <td>{{ number_format($item->subtotal, 0, ',', '.') }}</td>
+                            <td>{{ number_format($item->total, 0, ',', '.') }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -260,7 +260,7 @@
             <div class="col kanan">
                 <p>Hormat Kami :</p>
                 @foreach ($profil as $item)
-                    <p class="nama2">{{ $item->nama }}</p>
+                    <p class="nama2">{{ $item->name }}</p>
                 @endforeach
             </div>
         </div>

@@ -21,7 +21,9 @@ return new class extends Migration
             $table->string('ket_faktur')->nullable();
             $table->integer('total_harga');
             $table->string('ppn');
+            $table->string('ppn2');
             $table->string('pph');
+            $table->string('pph2');
             $table->integer('total_pp');
             $table->timestamps();
         });

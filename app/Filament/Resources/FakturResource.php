@@ -45,8 +45,8 @@ class FakturResource extends Resource
                     Select::make('customer_id')
                         ->label('Nama Customer')
                         ->required()
-                        ->searchable()
                         ->relationship('customer', 'nama_customer')
+                        ->searchable()
                         ->columnSpan([
                             'sm' => 1,
                             'md' => 2,
@@ -199,7 +199,7 @@ class FakturResource extends Resource
                             'md' => 2,
                             'lg' => 2
                         ]),
-                    Select::make('ppn')
+                    Select::make('ppn2')
                         ->required()
                         ->options([
                             0 => 0,
@@ -212,6 +212,7 @@ class FakturResource extends Resource
                             $ppn = intval($total) * (intval($state) / 100);
                             $hasil = $total + $ppn;
                             $set('hasilppn', Str::slug(intval($hasil)));
+                            $set('ppn', Str::slug(intval($ppn)));
                         })
                         ->columnSpan([
                             'md' => 1,
@@ -219,13 +220,25 @@ class FakturResource extends Resource
                         ]),
                     Textinput::make('hasilppn')
                         ->reactive()
-                        ->hidden(),
-                    Select::make('pph')
+                        ->prefix('Rp')
+                        ->mask(
+                            fn (TextInput\Mask $mask) => $mask
+                                ->numeric()
+                                ->decimalPlaces(2)
+                                ->decimalSeparator(',')
+                                ->thousandsSeparator('.')
+                        )
+                        ->hidden()
+                        ->label('Tampung PPN'),
+                    Hidden::make('ppn')
+                        ->reactive()
+                        ->label('Hasil PPN'),
+                    Select::make('pph2')
                         ->required()
                         ->label('PPH')
                         ->options([
                             0 => 0,
-                            "1.5" => 1.5
+                            "1.5" => "1.5"
                         ])
                         ->reactive()
                         ->afterStateUpdated(function (Closure $set, $state, $get) {
@@ -233,11 +246,15 @@ class FakturResource extends Resource
                             $pph = $total * (floatval($state) / 100);
                             $hasil = intval($total) + floatval($pph);
                             $set('total_pp', Str::slug(round($hasil)));
+                            $set('pph', Str::slug(round($pph)));
                         })
                         ->columnSpan([
                             'md' => 1,
                             'lg' => 1
                         ]),
+                    Hidden::make('pph')
+                        ->reactive()
+                        ->label('Hasil PPH'),
                     Forms\Components\TextInput::make('total_pp')
                         ->label('Total Setelah Pajak')
                         ->required()
@@ -288,8 +305,10 @@ class FakturResource extends Resource
                     ->copyMessage('Berhasil Disalin')
                     ->label('Total'),
                 Tables\Columns\TextColumn::make('ppn')
+                    ->money('IDR')
                     ->label('PPN'),
                 Tables\Columns\TextColumn::make('pph')
+                    ->money('IDR')
                     ->label('PPH'),
                 Tables\Columns\TextColumn::make('total_pp')
                     ->money('IDR')
@@ -302,6 +321,7 @@ class FakturResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
                 DeleteAction::make()
                     ->icon('heroicon-o-trash')
                     ->before(function ($record) {
@@ -319,7 +339,7 @@ class FakturResource extends Resource
                         }
                     }),
                 Action::make('Cetak')
-                    ->url(fn (Faktur $record): string => route('exportbarang'))
+                    ->url(fn (Faktur $record): string => route('printfaktur', $record))
                     ->icon('heroicon-o-printer')
                     ->color('warning')
             ])
