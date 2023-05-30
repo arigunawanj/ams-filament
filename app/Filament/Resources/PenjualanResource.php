@@ -8,6 +8,7 @@ use App\Models\Penjualan;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Toggle;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -18,8 +19,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Columns\BooleanColumn;
 use App\Filament\Resources\PenjualanResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Archilex\ToggleIconColumn\Columns\ToggleIconColumn;
 use App\Filament\Resources\PenjualanResource\RelationManagers;
-use Filament\Forms\Components\Card;
 
 class PenjualanResource extends Resource
 {
@@ -50,21 +51,25 @@ class PenjualanResource extends Resource
                 BadgeColumn::make('kode')
                     ->label('Kode Faktur')
                     ->copyable()
+                    ->sortable()
                     ->copyMessage('Berhasil Disalin')
                     ->searchable(),
                 TextColumn::make('customer.nama_customer')
                     ->label('Nama Customer')
                     ->copyable()
+                    ->sortable()
                     ->copyMessage('Berhasil Disalin')
                     ->searchable(),
                 TextColumn::make('tanggal_kirim')
                     ->label('Tanggal')
                     ->copyable()
+                    ->sortable()
                     ->copyMessage('Berhasil Disalin')
                     ->date()
                     ->searchable(),
                 TextColumn::make('jumlah')
                     ->copyable()
+                    ->sortable()
                     ->copyMessage('Berhasil Disalin')
                     ->label('Jumlah')
                     ->money('IDR')
@@ -72,13 +77,18 @@ class PenjualanResource extends Resource
                 TextColumn::make('keterangan')
                     ->label('Keterangan')
                     ->copyable()
+                    ->sortable()
                     ->copyMessage('Berhasil Disalin')
                     ->placeholder('-')
                     ->searchable(),
-                ToggleColumn::make('status')
+                ToggleIconColumn::make('status')
                     ->label('Lunas')
-                    ->onIcon('heroicon-s-check-circle')
-                    ->offIcon('heroicon-s-x-circle')
+                    ->alignCenter()
+                    ->onColor('primary')
+                    ->offColor('danger')
+                    ->sortable()
+                    ->size('xl'),
+
             ])
             ->filters([
                 //
