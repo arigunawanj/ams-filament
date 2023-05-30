@@ -197,7 +197,7 @@ class CetakController extends Controller
                   ->join('satuans', 'barangs.satuan_id', 'satuans.id')
                   ->join('fakturs', 'detail_fakturs.faktur_id', 'fakturs.id')
                   ->join('customers', 'fakturs.customer_id', 'customers.id')
-                  ->where('fakturs.id', $id)
+                  ->where('fakturs.kode_faktur', $id)
                   ->get();
 
         $kodenama = DB::table('detail_fakturs')
@@ -206,7 +206,7 @@ class CetakController extends Controller
                     ->join('satuans', 'barangs.satuan_id', 'satuans.id')
                     ->join('fakturs', 'detail_fakturs.faktur_id', 'fakturs.id')
                     ->join('customers', 'fakturs.customer_id', 'customers.id')
-                    ->where('fakturs.id', $id)
+                    ->where('fakturs.kode_faktur', $id)
                     ->get()
                     ->unique('kode_faktur');
 

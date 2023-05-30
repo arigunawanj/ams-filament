@@ -14,7 +14,7 @@
         
         <button id="dropdownSmallButton" data-dropdown-toggle="dropdownSmall"
             class="col-start-4 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-            type="button">Cetak Data ↓
+            type="button">Cetak Data ⋮
             {{-- <svg class="w-3 h-3 ml-2" aria-hidden="true" fill="none" stroke="currentColor"
                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>

@@ -340,7 +340,7 @@ class FakturResource extends Resource
                         }
                     }),
                 Action::make('Cetak')
-                    ->url(fn (Faktur $record): string => route('printfaktur', $record))
+                    ->url(fn (Faktur $record): string => route('printfaktur', $record->kode_faktur))
                     ->icon('heroicon-o-printer')
                     ->color('warning')
             ])
