@@ -27,7 +27,7 @@ class DataChart extends LineChartWidget
     return [
         'datasets' => [
             [
-                'label' => 'Faktur Keluar',
+                'label' => 'Total Faktur',
                 'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
             ],
         ],

@@ -19,7 +19,7 @@ class StatsOverview extends BaseWidget
             if(Penjualan::latest()->first() != null){
                 return Penjualan::where('status', 1)->count() . ' Lunas';
             } else {
-                return '';
+                return 0 . ' Lunas';
             }  
         }),
             
@@ -27,14 +27,14 @@ class StatsOverview extends BaseWidget
             if(Penjualan::latest()->first() != null){
                 return 'Rp ' . number_format(Penjualan::where('tanggal_kirim', '<' ,Carbon::now()->toDateString())->sum('jumlah'),0,",",".");
             } else {
-                return '';
+                return 'Rp ' . 0;
             }
         }),
         Card::make('Penjualan Belum Lunas', function (){ 
             if(Penjualan::latest()->first() != null){
                 return Penjualan::where('status', 0)->count() . ' Belum Lunas';
             } else {
-                return '';
+                return 0 . ' Belum Lunas';
             }  
         }),
         ];

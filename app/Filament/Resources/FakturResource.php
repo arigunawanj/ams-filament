@@ -67,7 +67,7 @@ class FakturResource extends Resource
                         ->required()
                         ->columnSpan([
                             'sm' => 2,
-                            'md' => 1,
+                            'md' => 2,
                             'lg' => 1
                         ]),
                     Textarea::make('ket_faktur')
@@ -96,12 +96,7 @@ class FakturResource extends Resource
                                     if ($harga) {
                                         $set('harga', Str::slug($harga->harga));
                                     }
-                                })
-                                ->columnSpan([
-                                    'sm' => 2,
-                                    'md' => 2,
-                                    'lg' => 2
-                                ]),
+                                }),
                             Forms\Components\TextInput::make('harga')
                                 ->required()
                                 ->numeric()
@@ -112,11 +107,7 @@ class FakturResource extends Resource
                                         ->decimalPlaces(2)
                                         ->decimalSeparator(',')
                                         ->thousandsSeparator('.')
-                                )
-                                ->columnSpan([
-                                    'md' => 2,
-                                    'lg' => 2
-                                ]),
+                                ),
                             Forms\Components\TextInput::make('stok_keluar')
                                 ->required()
                                 ->numeric()
@@ -124,11 +115,7 @@ class FakturResource extends Resource
                                 ->afterStateUpdated(function (Closure $set, $state, $get) {
                                     $tampung = $get('harga');
                                     $set('subtotal', Str::slug($state * $tampung));
-                                })
-                                ->columnSpan([
-                                    'md' => 1,
-                                    'lg' => 1
-                                ]),
+                                }),
                             Forms\Components\TextInput::make('subtotal')
                                 ->required()
                                 ->numeric()
@@ -140,11 +127,7 @@ class FakturResource extends Resource
                                         ->decimalPlaces(2)
                                         ->decimalSeparator(',')
                                         ->thousandsSeparator('.')
-                                )
-                                ->columnSpan([
-                                    'md' => 1,
-                                    'lg' => 1
-                                ]),
+                                ),
                             Forms\Components\TextInput::make('diskon')
                                 ->required()
                                 ->numeric()
@@ -159,11 +142,7 @@ class FakturResource extends Resource
 
                                     $hasil2 = intval($total) + $hasil;
                                     $set('../../total_harga', Str::slug(intval($hasil2)));
-                                })
-                                ->columnSpan([
-                                    'md' => 1,
-                                    'lg' => 1
-                                ]),
+                                }),
                             Forms\Components\TextInput::make('total')
                                 ->required()
                                 ->numeric()
@@ -195,11 +174,8 @@ class FakturResource extends Resource
                                 ->decimalPlaces(2)
                                 ->decimalSeparator(',')
                                 ->thousandsSeparator('.')
-                        )
-                        ->columnSpan([
-                            'md' => 2,
-                            'lg' => 2
-                        ]),
+                        ),
+                       
                     Select::make('ppn2')
                         ->required()
                         ->options([
@@ -214,11 +190,8 @@ class FakturResource extends Resource
                             $hasil = $total + $ppn;
                             $set('hasilppn', Str::slug(intval($hasil)));
                             $set('ppn', Str::slug(intval($ppn)));
-                        })
-                        ->columnSpan([
-                            'md' => 1,
-                            'lg' => 1
-                        ]),
+                        }),
+                       
                     Textinput::make('hasilppn')
                         ->reactive()
                         ->prefix('Rp')
@@ -248,11 +221,7 @@ class FakturResource extends Resource
                             $hasil = intval($total) + floatval($pph);
                             $set('total_pp', Str::slug(round($hasil)));
                             $set('pph', Str::slug(round($pph)));
-                        })
-                        ->columnSpan([
-                            'md' => 1,
-                            'lg' => 1
-                        ]),
+                        }),
                     Hidden::make('pph')
                         ->reactive()
                         ->label('Hasil PPH'),
@@ -266,11 +235,8 @@ class FakturResource extends Resource
                                 ->decimalPlaces(2)
                                 ->decimalSeparator(',')
                                 ->thousandsSeparator('.')
-                        )
-                        ->columnSpan([
-                            'md' => 2,
-                            'lg' => 2
-                        ]),
+                        ),
+                       
                 ])
                     ->columns(2)
             ]);

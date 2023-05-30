@@ -18,7 +18,7 @@ class BarangOverview extends BaseWidget
                 if(Barang::latest()->first() != null){
                     return Barang::where('tgl_kadaluarsa', '<', Carbon::now()->addDays(5)->toDateString())->count();
                 } else {
-                    return '';
+                    return 0;
                 }  
             }),
             

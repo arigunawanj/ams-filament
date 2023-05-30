@@ -28,6 +28,7 @@ use Filament\Forms\Components\MarkdownEditor;
 use App\Filament\Resources\NotesResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\NotesResource\RelationManagers;
+use Filament\Tables\Actions\DeleteAction;
 
 class NotesResource extends Resource
 {
@@ -61,8 +62,7 @@ class NotesResource extends Resource
                     '2xl' => 1,
                 ])->schema([
                     Split::make([
-                        
-                            Panel::make([
+                            Stack::make([
                                 TextColumn::make('judul')
                                     ->copyable()
                                     ->copyMessage('Berhasil Disalin')
@@ -79,7 +79,7 @@ class NotesResource extends Resource
                                         ->icon('heroicon-s-user')
                                         ->copyMessage('Berhasil Disalin')
                                         ->label('Pembuat'),
-                            ]),
+                            ])->space(2),
                       
                     ])
                 ])
@@ -89,6 +89,7 @@ class NotesResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                DeleteAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
