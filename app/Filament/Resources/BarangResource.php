@@ -71,7 +71,6 @@ class BarangResource extends Resource
                         ->placeholder('Masukkan Stok Barang...')
                         ->numeric(),
                     TextArea::make('ket_barang')
-                        ->required()
                         ->maxLength(255)
                         ->label('Keterangan'),
                 ])->columns(2),

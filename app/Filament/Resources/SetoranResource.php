@@ -13,12 +13,14 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\SetoranResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\SetoranResource\RelationManagers;
+use App\Models\Penjualan;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\BadgeColumn;
+use Illuminate\Support\Facades\DB;
 
 class SetoranResource extends Resource
 {
@@ -134,6 +136,11 @@ class SetoranResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 DeleteAction::make()
+                    ->icon('heroicon-o-trash')
+                    ->before(function ($record) {
+                        DB::table('penjualans')->where('kode', $record->kode_dep)->delete();
+                        
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

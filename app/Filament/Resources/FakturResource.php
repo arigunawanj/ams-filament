@@ -326,6 +326,7 @@ class FakturResource extends Resource
                 DeleteAction::make()
                     ->icon('heroicon-o-trash')
                     ->before(function ($record) {
+                        DB::table('penjualans')->where('kode', $record->kode_faktur)->delete();
                         $faktur = DB::table('detail_fakturs')
                             ->join('hargas', 'detail_fakturs.harga_id', 'hargas.id')
                             ->where('faktur_id', $record->id)
