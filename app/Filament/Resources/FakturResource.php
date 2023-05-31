@@ -40,6 +40,7 @@ class FakturResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+        
             ->schema([
                 Card::make([
                     Select::make('customer_id')
@@ -47,36 +48,22 @@ class FakturResource extends Resource
                         ->required()
                         ->relationship('customer', 'nama_customer')
                         ->searchable()
-                        ->columnSpan([
-                            'sm' => 1,
-                            'md' => 2,
-                            'lg' => 2
-                        ]),
+                        ->columnSpan(2),
                     TextInput::make('kode_faktur')
                         ->required()
                         ->label('Kode Faktur')
                         ->unique(ignoreRecord: true)
                         ->maxLength(255)
-                        ->columnSpan([
-                            'sm' => 1,
-                            'md' => 1,
-                            'lg' => 1
-                        ]),
+                        ->columnSpan(2),
+                        
                     Forms\Components\DatePicker::make('tanggal_faktur')
                         ->label('Tanggal Faktur')
                         ->required()
-                        ->columnSpan([
-                            'sm' => 2,
-                            'md' => 2,
-                            'lg' => 1
-                        ]),
+                        ->columnSpan(2),
                     Textarea::make('ket_faktur')
                         ->label('Keterangan')
-                        ->maxLength(255)
-                        ->columnSpan([
-                            'md' => 2,
-                            'lg' => 2
-                        ]),
+                        ->columnSpan(2)
+                        ->maxLength(255),
                     Repeater::make('detail_faktur')
                         ->relationship()
                         ->schema([
@@ -153,12 +140,8 @@ class FakturResource extends Resource
                                         ->decimalPlaces(2)
                                         ->decimalSeparator(',')
                                         ->thousandsSeparator('.')
-                                )
+                                ),
 
-                                ->columnSpan([
-                                    'md' => 1,
-                                    'lg' => 1
-                                ]),
                         ])
                         ->columns(2)
                         ->label('Barang')
@@ -168,6 +151,7 @@ class FakturResource extends Resource
                         ->label('Total Harga')
                         ->required()
                         ->prefix('Rp')
+                        ->columnSpan(2)
                         ->mask(
                             fn (TextInput\Mask $mask) => $mask
                                 ->numeric()
@@ -183,6 +167,7 @@ class FakturResource extends Resource
                             11 => 11
                         ])
                         ->label('PPN')
+                        ->columnSpan(2)
                         ->reactive()
                         ->afterStateUpdated(function (Closure $set, $state, $get) {
                             $total = $get('total_harga');
@@ -210,6 +195,7 @@ class FakturResource extends Resource
                     Select::make('pph2')
                         ->required()
                         ->label('PPH')
+                        ->columnSpan(2)
                         ->options([
                             0 => 0,
                             "1.5" => "1.5"
@@ -229,6 +215,7 @@ class FakturResource extends Resource
                         ->label('Total Setelah Pajak')
                         ->required()
                         ->prefix('Rp')
+                        ->columnSpan(2)
                         ->mask(
                             fn (TextInput\Mask $mask) => $mask
                                 ->numeric()

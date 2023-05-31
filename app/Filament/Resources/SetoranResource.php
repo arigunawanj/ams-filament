@@ -72,6 +72,7 @@ class SetoranResource extends Resource
                         ->required(),
                     FileUpload::make('foto_dep')
                         ->columnSpan(2)
+                        ->directory('setoran/foto')
                         ->label('Lampiran'),
                     Textarea::make('ket_dep')
                         ->label('Keterangan')
