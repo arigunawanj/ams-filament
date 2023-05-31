@@ -76,21 +76,29 @@ class HargaResource extends Resource
             ->columns([
                 BadgeColumn::make('kode_harga')
                     ->copyable()
+                    ->searchable()
+                    ->sortable()
                     ->color('warning')
                     ->copyMessage('Berhasil Disalin')
                     ->label('Kode Harga'),
                 Tables\Columns\TextColumn::make('barang.nama_barang')
                     ->copyable()
+                    ->searchable()
+                    ->sortable()
                     ->copyMessage('Berhasil Disalin')
                     ->label('Nama Barang'),
                 Tables\Columns\TextColumn::make('harga')
                     ->money('IDR')
+                    ->searchable()
                     ->copyable()
+                    ->sortable()
                     ->copyMessage('Berhasil Disalin')
                     ->label('Harga Jual'),
                 Tables\Columns\TextColumn::make('harga_netto')
                     ->money('IDR')
+                    ->searchable()
                     ->copyable()
+                    ->sortable()
                     ->copyMessage('Berhasil Disalin')
                     ->label('Harga Netto'),
             ])
