@@ -72,7 +72,7 @@
                         @php
                             setlocale(LC_ALL, 'id-ID', 'id_ID');
                             $tanggal = date_create($item->tanggal_masuk);
-                            $tgl =  \Carbon\Carbon::parse($tanggal)->formatLocalized('%d-%m-%Y');
+                            $tgl =  \Carbon\Carbon::parse($tanggal)->formatLocalized('%d %B %Y');
                         @endphp
                         <td>{{ $tgl }}</td>
                     </tr>

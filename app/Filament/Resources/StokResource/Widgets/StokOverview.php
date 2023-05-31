@@ -18,11 +18,23 @@ class StokOverview extends BaseWidget
                 if(Stok::latest()->first() != null){
                     return Stok::latest()->first()->barang->nama_barang;
                 } else {
-                    return '';
+                    return '-';
                 }  
             }),
-            Card::make('Jumlah Masuk', Stok::latest()->pluck('stok_masuk')->first()),
-            Card::make('Tanggal Masuk', Stok::latest()->pluck('tanggal_masuk')->first()),
+            Card::make('Jumlah Masuk', function(){
+                if(Stok::latest()->first() != null){
+                    return Stok::latest()->pluck('stok_masuk')->first();
+                } else {
+                    return '0';
+                }
+            } ),
+            Card::make('Tanggal Masuk', function(){
+                if(Stok::latest()->first() != null){
+                    return Stok::latest()->pluck('tanggal_masuk')->first();
+                } else {
+                    return '0';
+                }
+            }),
         ];
     }
 }

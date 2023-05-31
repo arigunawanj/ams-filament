@@ -11,6 +11,7 @@ use App\Models\Customer;
 use App\Models\Penjualan;
 use App\Models\Distributor;
 use App\Models\DetailProfil;
+use App\Models\Harga;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -187,6 +188,18 @@ class CetakController extends Controller
         
         // PDF akan ditampilkan secara stream dengan ukuran A4-Landscape dan bisa didownload dengan nama yang sudah dideklarasikan
         return $pdf->setPaper('a4', 'landscape')->stream('Data Laporan Faktur Pajak - '. Carbon::now(). '.pdf');
+    }
+
+    public function printHarga()
+    {
+        // Mengambil seluruh data yang ada dalam tabel Pajak
+        $harga = Harga::all();
+
+        // Halaman PDF akan di load dengan membawa data yang sudah di deklarasikan
+        $pdf = Pdf::loadView('print.hargaprint', ['harga' => $harga]);
+        
+        // PDF akan ditampilkan secara stream dengan ukuran A4-Landscape dan bisa didownload dengan nama yang sudah dideklarasikan
+        return $pdf->setPaper('a4', 'landscape')->stream('Data Harga Barang - '. Carbon::now(). '.pdf');
     }
 
     public function printFaktur($id)

@@ -8,6 +8,7 @@ use App\Exports\CustomerExport;
 use App\Exports\DistributorExport;
 use App\Exports\HargaExport;
 use App\Exports\SatuanExport;
+use App\Exports\StokExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ExportController extends Controller
@@ -26,14 +27,17 @@ class ExportController extends Controller
     {
         return Excel::download(new HargaExport, 'hargaexport.xlsx');
     }
+
     public function customerExport()
     {
         return Excel::download(new CustomerExport, 'customerexport.xlsx');
     }
+
     public function distributorExport()
     {
         return Excel::download(new DistributorExport, 'distributorexport.xlsx');
     }
+
 
  
 }

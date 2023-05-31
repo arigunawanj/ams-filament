@@ -38,6 +38,7 @@ Route::post('admin/distributors/import', [ImportController::class, 'distributorI
 Route::get('admin/customers/cetak', [CetakController::class, 'printCust'])->name('printcust');
 Route::get('admin/distributors/cetak', [CetakController::class, 'printDist'])->name('printdist');
 Route::get('admin/barangs/cetak', [CetakController::class, 'printBarang'])->name('printbarang');
+Route::get('admin/hargas/cetak', [CetakController::class, 'printHarga'])->name('printharga');
 
 Route::get('admin/setorans/cetak', [CetakController::class, 'printSetoran'])->name('printsetoran');
 Route::get('admin/stoks/cetak', [CetakController::class, 'printStok'])->name('printstok');
