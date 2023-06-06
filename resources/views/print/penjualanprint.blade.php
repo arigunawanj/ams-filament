@@ -75,7 +75,7 @@
                     Dicetak : <span class="text-warna">{{ $data }}</span>
                 </p>
             </header>
-            <table class="table table-bordered">
+            <table class="table table-bordered" style="width:100%">
                 <thead>
                     <th class="nopenj">No</th>
                     <th>Kode Penjualan</th>

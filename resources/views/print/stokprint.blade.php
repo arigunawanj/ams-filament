@@ -54,7 +54,7 @@
                 Dicetak : <span class="text-warna">{{ $data }}</span>
             </p>
         </header>
-        <table class="table">
+        <table class="table" style="width:100%">
             <thead>
                 <th>No</th>
                 <th>Nama Barang</th>
