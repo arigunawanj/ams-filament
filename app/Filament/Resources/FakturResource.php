@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\FakturResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\FakturResource\RelationManagers;
+use Filament\Forms\Components\Grid;
 use Filament\Tables\Columns\BadgeColumn;
 
 class FakturResource extends Resource
@@ -40,100 +41,242 @@ class FakturResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-        
             ->schema([
                 Card::make([
-                    Select::make('customer_id')
-                        ->label('Nama Customer')
-                        ->required()
-                        ->relationship('customer', 'nama_customer')
-                        ->searchable()
-                        ->columnSpan(2),
-                    TextInput::make('kode_faktur')
-                        ->required()
-                        ->label('Kode Faktur')
-                        ->unique(ignoreRecord: true)
-                        ->maxLength(255)
-                        ->columnSpan(2),
-                        
-                    Forms\Components\DatePicker::make('tanggal_faktur')
-                        ->label('Tanggal Faktur')
-                        ->required()
-                        ->columnSpan(2),
-                    Textarea::make('ket_faktur')
-                        ->label('Keterangan')
-                        ->columnSpan(2)
-                        ->maxLength(255),
-                    Repeater::make('detail_faktur')
-                        ->relationship()
+                    Grid::make([
+                        'default' => 2,
+                        'sm' => 1,
+                        'md' => 2,
+                        'lg' => 2,
+                        'xl' => 2,
+                        '2xl' => 2,
+                    ])
                         ->schema([
-                            Select::make('harga_id')
+                            Select::make('customer_id')
+                                ->label('Nama Customer')
+                                ->required()
+                                ->relationship('customer', 'nama_customer')
                                 ->searchable()
-                                ->label('Pilih Barang')
-                                ->options(
-                                    DB::table('hargas')
-                                        ->join('barangs', 'hargas.barang_id', 'barangs.id')
-                                        ->pluck('hargas.kode_harga', 'hargas.id')
+                                ->columnSpan(2),
+                            TextInput::make('kode_faktur')
+                                ->required()
+                                ->label('Kode Faktur')
+                                ->unique(ignoreRecord: true)
+                                ->maxLength(255)
+                                ->columnSpan([
+                                    'default' => 2,
+                                    'md' => 1,
+                                    'lg' => 1,
+                                    'xl' => 1
+                                ])
+                                ->columns(1),
+                            Forms\Components\DatePicker::make('tanggal_faktur')
+                                ->label('Tanggal Faktur')
+                                ->required()
+                                ->columnSpan([
+                                    'default' => 2,
+                                    'md' => 2,
+                                    'lg' => 1
+                                ]),
+                            Textarea::make('ket_faktur')
+                                ->label('Keterangan')
+                                ->placeholder('Tidak Wajib diisi')
+                                ->columnSpan(2)
+                                ->maxLength(255),
+                            Repeater::make('detail_faktur')
+                                ->relationship()
+                                ->schema([
+                                    Select::make('barang_id')
+                                        ->searchable()
+                                        ->label('Pilih Barang')
+                                        ->options(Barang::all()->pluck('nama_barang', 'id'))
+                                        ->reactive()
+                                        ->afterStateUpdated(fn (callable $set) => $set('harga_id', null))
+                                        ->columnSpan([
+                                            'default' => 2,
+                                            'md' => 2,
+                                            'lg' => 1
+                                        ]),
+                                    Select::make('harga_id')
+                                        ->searchable()
+                                        ->label('Pilih Kode Harga')
+                                        ->options(function (callable $get) {
+                                            $harga = Harga::where('barang_id', $get('barang_id'))->get();
+                                            if (!$harga) {
+                                                return Harga::all()->pluck('kode_harga', 'id');
+                                            }
 
+                                            return $harga->pluck('kode_harga', 'id');
+                                        })
+                                        ->columnSpan([
+                                            'default' => 2,
+                                            'md' => 2,
+                                            'lg' => 1
+                                        ])
+                                        ->reactive()
+                                        ->afterStateUpdated(function ($state, callable $set) {
+                                            $harga = Harga::find($state);
+
+                                            if ($harga) {
+                                                $set('harga', Str::slug($harga->harga));
+                                            }
+                                        }),
+                                    Forms\Components\TextInput::make('harga')
+                                        ->required()
+                                        ->numeric()
+                                        ->prefix('Rp')
+                                        ->columnSpan([
+                                            'default' => 2,
+                                            'md' => 2,
+                                            'lg' => 1
+                                        ])
+                                        ->mask(
+                                            fn (TextInput\Mask $mask) => $mask
+                                                ->numeric()
+                                                ->decimalPlaces(2)
+                                                ->decimalSeparator(',')
+                                                ->thousandsSeparator('.')
+                                        ),
+                                    Forms\Components\TextInput::make('stok_keluar')
+                                        ->required()
+                                        ->numeric()
+                                        ->reactive()
+                                        ->columnSpan([
+                                            'default' => 2,
+                                            'md' => 2,
+                                            'lg' => 1
+                                        ])
+                                        ->afterStateUpdated(function (Closure $set, $state, $get) {
+                                            $tampung = $get('harga');
+                                            $set('subtotal', Str::slug($state * $tampung));
+                                        }),
+                                    Forms\Components\TextInput::make('subtotal')
+                                        ->required()
+                                        ->numeric()
+                                        ->reactive()
+                                        ->prefix('Rp')
+                                        ->columnSpan([
+                                            'default' => 2,
+                                            'md' => 2,
+                                            'lg' => 1
+                                        ])
+                                        ->mask(
+                                            fn (TextInput\Mask $mask) => $mask
+                                                ->numeric()
+                                                ->decimalPlaces(2)
+                                                ->decimalSeparator(',')
+                                                ->thousandsSeparator('.')
+                                        ),
+                                    Forms\Components\TextInput::make('diskon')
+                                        ->required()
+                                        ->numeric()
+                                        ->lazy()
+                                        ->afterStateUpdated(function (Closure $set, $state, $get) {
+                                            $subtotal = $get('subtotal');
+                                            $diskon = $subtotal * ($state / 100);
+                                            $hasil = $subtotal - $diskon;
+                                            $set('total', Str::slug(intval($hasil)));
+
+                                            $total = $get('../../total_harga');
+
+                                            $hasil2 = intval($total) + $hasil;
+                                            $set('../../total_harga', Str::slug(intval($hasil2)));
+                                        }),
+                                    Forms\Components\TextInput::make('total')
+                                        ->required()
+                                        ->numeric()
+                                        ->prefix('Rp')
+                                        ->mask(
+                                            fn (TextInput\Mask $mask) => $mask
+                                                ->numeric()
+                                                ->decimalPlaces(2)
+                                                ->decimalSeparator(',')
+                                                ->thousandsSeparator('.')
+                                        )
+                                        ->columnSpan(2),
+
+                                ])
+                                ->columns(2)
+                                ->columnSpan(2)
+                                ->label('Barang'),
+                            Forms\Components\TextInput::make('total_harga')
+                                ->reactive()
+                                ->label('Total Harga')
+                                ->required()
+                                ->prefix('Rp')
+                                ->columnSpan(2)
+                                ->mask(
+                                    fn (TextInput\Mask $mask) => $mask
+                                        ->numeric()
+                                        ->decimalPlaces(2)
+                                        ->decimalSeparator(',')
+                                        ->thousandsSeparator('.')
+                                ),
+
+                            Select::make('ppn2')
+                                ->required()
+                                ->options([
+                                    0 => 0,
+                                    11 => 11
+                                ])
+                                ->label('PPN')
+                                ->columnSpan([
+                                    'default' => 2,
+                                    'md' => 1,
+                                    'lg' => 1
+                                ])
+                                ->reactive()
+                                ->afterStateUpdated(function (Closure $set, $state, $get) {
+                                    $total = $get('total_harga');
+                                    $ppn = intval($total) * (intval($state) / 100);
+                                    $hasil = $total + $ppn;
+                                    $set('hasilppn', Str::slug(intval($hasil)));
+                                    $set('ppn', Str::slug(intval($ppn)));
+                                }),
+
+                            Textinput::make('hasilppn')
+                                ->reactive()
+                                ->prefix('Rp')
+                                ->mask(
+                                    fn (TextInput\Mask $mask) => $mask
+                                        ->numeric()
+                                        ->decimalPlaces(2)
+                                        ->decimalSeparator(',')
+                                        ->thousandsSeparator('.')
                                 )
+                                ->hidden()
+                                ->label('Tampung PPN'),
+                            Hidden::make('ppn')
                                 ->reactive()
-                                ->afterStateUpdated(function ($state, callable $set) {
-                                    $harga = Harga::find($state);
-
-                                    if ($harga) {
-                                        $set('harga', Str::slug($harga->harga));
-                                    }
-                                }),
-                            Forms\Components\TextInput::make('harga')
+                                ->label('Hasil PPN'),
+                            Select::make('pph2')
                                 ->required()
-                                ->numeric()
-                                ->prefix('Rp')
-                                ->mask(
-                                    fn (TextInput\Mask $mask) => $mask
-                                        ->numeric()
-                                        ->decimalPlaces(2)
-                                        ->decimalSeparator(',')
-                                        ->thousandsSeparator('.')
-                                ),
-                            Forms\Components\TextInput::make('stok_keluar')
-                                ->required()
-                                ->numeric()
+                                ->label('PPH')
+                                ->columnSpan([
+                                    'default' => 2,
+                                    'md' => 1,
+                                    'lg' => 1
+                                ])
+                                ->options([
+                                    0 => 0,
+                                    "1.5" => "1.5"
+                                ])
                                 ->reactive()
                                 ->afterStateUpdated(function (Closure $set, $state, $get) {
-                                    $tampung = $get('harga');
-                                    $set('subtotal', Str::slug($state * $tampung));
+                                    $total = $get('hasilppn');
+                                    $pph = $total * (floatval($state) / 100);
+                                    $hasil = intval($total) + floatval($pph);
+                                    $set('total_pp', Str::slug(round($hasil)));
+                                    $set('pph', Str::slug(round($pph)));
                                 }),
-                            Forms\Components\TextInput::make('subtotal')
-                                ->required()
-                                ->numeric()
+                            Hidden::make('pph')
                                 ->reactive()
-                                ->prefix('Rp')
-                                ->mask(
-                                    fn (TextInput\Mask $mask) => $mask
-                                        ->numeric()
-                                        ->decimalPlaces(2)
-                                        ->decimalSeparator(',')
-                                        ->thousandsSeparator('.')
-                                ),
-                            Forms\Components\TextInput::make('diskon')
+                                ->label('Hasil PPH'),
+                            Forms\Components\TextInput::make('total_pp')
+                                ->label('Total Setelah Pajak')
                                 ->required()
-                                ->numeric()
-                                ->lazy()
-                                ->afterStateUpdated(function (Closure $set, $state, $get) {
-                                    $subtotal = $get('subtotal');
-                                    $diskon = $subtotal * ($state / 100);
-                                    $hasil = $subtotal - $diskon;
-                                    $set('total', Str::slug(intval($hasil)));
-
-                                    $total = $get('../../total_harga');
-
-                                    $hasil2 = intval($total) + $hasil;
-                                    $set('../../total_harga', Str::slug(intval($hasil2)));
-                                }),
-                            Forms\Components\TextInput::make('total')
-                                ->required()
-                                ->numeric()
                                 ->prefix('Rp')
+                                ->columnSpan(2)
                                 ->mask(
                                     fn (TextInput\Mask $mask) => $mask
                                         ->numeric()
@@ -144,88 +287,8 @@ class FakturResource extends Resource
 
                         ])
                         ->columns(2)
-                        ->label('Barang')
-                        ->columnSpan(2),
-                    Forms\Components\TextInput::make('total_harga')
-                        ->reactive()
-                        ->label('Total Harga')
-                        ->required()
-                        ->prefix('Rp')
                         ->columnSpan(2)
-                        ->mask(
-                            fn (TextInput\Mask $mask) => $mask
-                                ->numeric()
-                                ->decimalPlaces(2)
-                                ->decimalSeparator(',')
-                                ->thousandsSeparator('.')
-                        ),
-                       
-                    Select::make('ppn2')
-                        ->required()
-                        ->options([
-                            0 => 0,
-                            11 => 11
-                        ])
-                        ->label('PPN')
-                        ->columnSpan(2)
-                        ->reactive()
-                        ->afterStateUpdated(function (Closure $set, $state, $get) {
-                            $total = $get('total_harga');
-                            $ppn = intval($total) * (intval($state) / 100);
-                            $hasil = $total + $ppn;
-                            $set('hasilppn', Str::slug(intval($hasil)));
-                            $set('ppn', Str::slug(intval($ppn)));
-                        }),
-                       
-                    Textinput::make('hasilppn')
-                        ->reactive()
-                        ->prefix('Rp')
-                        ->mask(
-                            fn (TextInput\Mask $mask) => $mask
-                                ->numeric()
-                                ->decimalPlaces(2)
-                                ->decimalSeparator(',')
-                                ->thousandsSeparator('.')
-                        )
-                        ->hidden()
-                        ->label('Tampung PPN'),
-                    Hidden::make('ppn')
-                        ->reactive()
-                        ->label('Hasil PPN'),
-                    Select::make('pph2')
-                        ->required()
-                        ->label('PPH')
-                        ->columnSpan(2)
-                        ->options([
-                            0 => 0,
-                            "1.5" => "1.5"
-                        ])
-                        ->reactive()
-                        ->afterStateUpdated(function (Closure $set, $state, $get) {
-                            $total = $get('hasilppn');
-                            $pph = $total * (floatval($state) / 100);
-                            $hasil = intval($total) + floatval($pph);
-                            $set('total_pp', Str::slug(round($hasil)));
-                            $set('pph', Str::slug(round($pph)));
-                        }),
-                    Hidden::make('pph')
-                        ->reactive()
-                        ->label('Hasil PPH'),
-                    Forms\Components\TextInput::make('total_pp')
-                        ->label('Total Setelah Pajak')
-                        ->required()
-                        ->prefix('Rp')
-                        ->columnSpan(2)
-                        ->mask(
-                            fn (TextInput\Mask $mask) => $mask
-                                ->numeric()
-                                ->decimalPlaces(2)
-                                ->decimalSeparator(',')
-                                ->thousandsSeparator('.')
-                        ),
-                       
                 ])
-                    ->columns(2)
             ]);
     }
 

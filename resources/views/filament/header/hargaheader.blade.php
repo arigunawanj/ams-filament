@@ -9,8 +9,9 @@
 </head>
 
 <body>
-    <div class="grid grid-cols-1 gap-3">
+    <div class="flex justify-between flex-col md:flex-row">
         <h2 class="font-bold text-2xl">Kelola Harga</h2>
+        <div class="flex flex-row md:flex-row mt-4 gap-3">
         <a href="{{ route('filament.resources.hargas.create') }}"
             class="col-start-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Buat</a>
         <button id="dropdownSmallButton" data-dropdown-toggle="dropdownSmall"
@@ -21,6 +22,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg> --}}
         </button>
+        </div>
 
         <!-- Dropdown menu -->
         <div id="dropdownSmall"

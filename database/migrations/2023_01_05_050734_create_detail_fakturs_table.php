@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('detail_fakturs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('faktur_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('barang_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->integer('harga');
             $table->integer('stok_keluar');
             $table->integer('subtotal');
