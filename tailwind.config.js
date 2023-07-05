@@ -2,7 +2,9 @@ const colors = require('tailwindcss/colors')
 
 module.exports = {
     content: [
+        "./resources/**/**/*.blade.php",
         "./resources/**/*.blade.php",
+        "./resources/**/**/**/*.blade.php",
         "./resources/**/*.js",
         "./resources/**/*.vue",
         './vendor/filament/**/*.blade.php',
@@ -17,6 +19,9 @@ module.exports = {
                 success: colors.green,
                 warning: colors.orange,
             },
+            fontFamily: {
+                sans : ['Be Vietnam Pro'],
+            }
         },
     },
     plugins: [
