@@ -131,6 +131,7 @@ class SetoranResource extends Resource
                     ->placeholder('-')
                     ->label('Keterangan'),
             ])
+            ->poll('3s')
             ->filters([
                 //
             ])

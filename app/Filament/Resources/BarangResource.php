@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use Closure;
+use stdClass;
 use Carbon\Carbon;
 use Filament\Forms;
 use TextInput\Mask;
@@ -11,12 +12,13 @@ use App\Models\Barang;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
-use Filament\Forms\Components\Card;
 
+use Filament\Forms\Components\Card;
 use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Contracts\HasTable;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Actions\DeleteAction;
@@ -82,6 +84,14 @@ class BarangResource extends Resource
         return $table
 
             ->columns([
+                TextColumn::make('No')->getStateUsing(
+                    static function (stdClass $rowLoop, HasTable $livewire): string {
+                        return (string) ($rowLoop->iteration +
+                            ($livewire->tableRecordsPerPage * ($livewire->page - 1
+                            ))
+                        );
+                    }
+                ),
                 BadgeColumn::make('kode_barang')
                     ->searchable()
                     ->copyable()
@@ -132,6 +142,7 @@ class BarangResource extends Resource
                     ->sortable(),
 
             ])
+            ->poll('3s')
             ->filters([
                 //
             ])

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use stdClass;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Penjualan;
@@ -12,6 +13,7 @@ use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Toggle;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\ToggleColumn;
@@ -48,6 +50,14 @@ class PenjualanResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('No')->getStateUsing(
+                    static function (stdClass $rowLoop, HasTable $livewire): string {
+                        return (string) ($rowLoop->iteration +
+                            ($livewire->tableRecordsPerPage * ($livewire->page - 1
+                            ))
+                        );
+                    }
+                ),
                 BadgeColumn::make('kode')
                     ->label('Kode Faktur')
                     ->copyable()
@@ -90,6 +100,7 @@ class PenjualanResource extends Resource
                     ->size('xl'),
 
             ])
+            ->poll('3s')
             ->filters([
                 //
             ])

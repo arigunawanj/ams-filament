@@ -61,6 +61,7 @@ class NotesResource extends Resource
                     ->copyMessage('Berhasil Disalin')
                     ->label('Pembuat'),
             ])
+            ->poll('3s')
             ->filters([
                 //
             ])

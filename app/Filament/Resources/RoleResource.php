@@ -73,6 +73,7 @@ class RoleResource extends Resource
 
 
             ])
+            ->poll('3s')
             ->filters([
                 //
             ])

@@ -53,6 +53,7 @@ class SatuanResource extends Resource
                     ->label('Nama Satuan')
                     ->sortable(),
             ])
+            ->poll('3s')
             ->filters([
                 //
             ])

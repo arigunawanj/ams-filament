@@ -93,15 +93,8 @@ class UserResource extends Resource
                     ->copyable()
                     ->copyMessage('Berhasil Disalin')
                     ->sortable(),
-                TextColumn::make('created_at')
-                    ->sortable()
-                    ->dateTime('d M Y, H:i:s')
-                    ->label('Dibuat pada'),
-                TextColumn::make('updated_at')
-                    ->sortable()
-                    ->dateTime('d M Y, H:i:s')
-                    ->label('Diubah pada'),
             ])
+            ->poll('3s')
             ->filters([
                 //
             ])

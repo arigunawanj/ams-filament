@@ -77,6 +77,7 @@ class StokResource extends Resource
                     ->label('Tanggal masuk')
                     ->searchable(),
             ])
+            ->poll('3s')
             ->filters([
                 //
             ])

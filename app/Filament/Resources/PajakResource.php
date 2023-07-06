@@ -89,6 +89,7 @@ class PajakResource extends Resource
                     ->placeholder('-')
                     ->label('Keterangan'),
             ])
+            ->poll('3s')
             ->filters([
                 //
             ])

@@ -2,19 +2,22 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\DistributorResource\Pages;
-use App\Filament\Resources\DistributorResource\RelationManagers;
-use App\Models\Distributor;
+use stdClass;
 use Filament\Forms;
-use Filament\Forms\Components\Card;
-use Filament\Resources\Form;
-use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
-use Filament\Tables\Actions\DeleteAction;
+use App\Models\Distributor;
+use Filament\Resources\Form;
+use Filament\Resources\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Card;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Columns\BadgeColumn;
+use Filament\Tables\Actions\DeleteAction;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\DistributorResource\Pages;
+use App\Filament\Resources\DistributorResource\RelationManagers;
 
 class DistributorResource extends Resource
 {
@@ -57,6 +60,14 @@ class DistributorResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('No')->getStateUsing(
+                    static function (stdClass $rowLoop, HasTable $livewire): string {
+                        return (string) ($rowLoop->iteration +
+                            ($livewire->tableRecordsPerPage * ($livewire->page - 1
+                            ))
+                        );
+                    }
+                ),
                 BadgeColumn::make('kode_distributor')
                     ->label('Kode Distributor')
                     ->copyable()
@@ -71,6 +82,7 @@ class DistributorResource extends Resource
                     ->sortable()
                     ->searchable(),
             ])
+            ->poll('3s')
             ->filters([
                 //
             ])

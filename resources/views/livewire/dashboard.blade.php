@@ -18,7 +18,7 @@
                 <a href="#">
                     <h5 class="mb-2 text-xl tracking-tight text-gray-900 dark:text-white">Total Barang</h5>
                 </a>
-                <p class="mb-3 text-xl font-bold text-black dark:text-white">0 Barang</p>
+                <p class="mb-3 text-xl font-bold text-black dark:text-white">{{ $jmlbarang }} Barang</p>
             </div>
             <div class="">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -35,7 +35,7 @@
                 <a href="#">
                     <h5 class="mb-2 text-xl tracking-tight text-gray-900 dark:text-white">Total Customer</h5>
                 </a>
-                <p class="mb-3 text-xl font-bold text-black dark:text-white">0 Customer</p>
+                <p class="mb-3 text-xl font-bold text-black dark:text-white">{{ $jmlcust }} Customer</p>
             </div>
             <div class="">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -53,7 +53,7 @@
                 <a href="#">
                     <h5 class="mb-2 text-xl tracking-tight text-gray-900 dark:text-white">Total Distributor</h5>
                 </a>
-                <p class="mb-3 text-xl font-bold text-black dark:text-white">0 Distributor</p>
+                <p class="mb-3 text-xl font-bold text-black dark:text-white">{{ $jmldist }} Distributor</p>
             </div>
             <div class="">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -81,7 +81,7 @@
                 <a href="#">
                     <h5 class="mb-2 text-xl tracking-tight text-gray-900 dark:text-white">Total Orderan Bulan Ini</h5>
                 </a>
-                <p class="mb-3 text-xl font-bold text-black dark:text-white">0x order</p>
+                <p class="mb-3 text-xl font-bold text-black dark:text-white">{{ $orderBulan }}x order</p>
             </div>
             <div class="">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -97,8 +97,8 @@
                 <a href="#">
                     <h5 class="mb-2 text-xl tracking-tight text-gray-900 dark:text-white">Transaksi Lunas</h5>
                 </a>
-                <p class="mb-3 text-xl font-bold text-black dark:text-white">Rp. 0</p>
-                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Dengan total 0x pemesanan</p>
+                <p class="mb-3 text-xl font-bold text-black dark:text-white">Rp. {{ number_format($lunasBulan, 0, '.','.') }}</p>
+                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Dengan total {{ $jmlLunas }}x pemesanan</p>
             </div>
             <div class="">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -115,8 +115,8 @@
                 <a href="#">
                     <h5 class="mb-2 text-xl tracking-tight text-gray-900 dark:text-white">Transaksi Belum Lunas</h5>
                 </a>
-                <p class="mb-3 text-xl font-bold text-black dark:text-white">Rp. 0</p>
-                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Dengan total 0x pemesanan</p>
+                <p class="mb-3 text-xl font-bold text-black dark:text-white">Rp. {{ number_format($belumBulan, 0, '.','.') }}</p>
+                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Dengan total {{ $jmlBelum }}x pemesanan</p>
             </div>
             <div class="">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -169,7 +169,7 @@
             class="flex items-center justify-between w-full h-40 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
             <div class="flex flex-col">
                 <a href="#">
-                    <h5 class="mb-2 text-xl tracking-tight text-gray-900 dark:text-white">Jumlah Belum Lunas</h5>
+                    <h5 class="mb-2 text-xl tracking-tight text-gray-900 dark:text-white">Jumlah Transaksi Bulan Ini</h5>
                 </a>
                 <p class="mb-3 text-xl font-bold text-black dark:text-white">Rp. 0</p>
                 <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Dengan total 0x pemesanan</p>

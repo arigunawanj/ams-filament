@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use stdClass;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Harga;
@@ -10,13 +11,15 @@ use Filament\Resources\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Contracts\HasTable;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\BadgeColumn;
+use Filament\Tables\Actions\DeleteAction;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\HargaResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\HargaResource\RelationManagers;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Columns\BadgeColumn;
 
 class HargaResource extends Resource
 {
@@ -74,6 +77,14 @@ class HargaResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('No')->getStateUsing(
+                    static function (stdClass $rowLoop, HasTable $livewire): string {
+                        return (string) ($rowLoop->iteration +
+                            ($livewire->tableRecordsPerPage * ($livewire->page - 1
+                            ))
+                        );
+                    }
+                ),
                 BadgeColumn::make('kode_harga')
                     ->copyable()
                     ->searchable()
@@ -102,6 +113,7 @@ class HargaResource extends Resource
                     ->copyMessage('Berhasil Disalin')
                     ->label('Harga Netto'),
             ])
+            ->poll('3s')
             ->filters([
                 //
             ])

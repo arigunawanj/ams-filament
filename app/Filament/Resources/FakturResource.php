@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use Closure;
+use stdClass;
 use Filament\Forms;
 use App\Models\Stok;
 use Filament\Tables;
@@ -15,19 +16,21 @@ use Filament\Resources\Table;
 use Filament\Resources\Resource;
 use Illuminate\Support\Facades\DB;
 use Filament\Forms\Components\Card;
-use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Grid;
 use Filament\Tables\Actions\Action;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Textarea;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Contracts\HasTable;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Actions\DeleteAction;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\FakturResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\FakturResource\RelationManagers;
-use Filament\Forms\Components\Grid;
-use Filament\Tables\Columns\BadgeColumn;
 
 class FakturResource extends Resource
 {
@@ -296,6 +299,14 @@ class FakturResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('No')->getStateUsing(
+                    static function (stdClass $rowLoop, HasTable $livewire): string {
+                        return (string) ($rowLoop->iteration +
+                            ($livewire->tableRecordsPerPage * ($livewire->page - 1
+                            ))
+                        );
+                    }
+                ),
                 BadgeColumn::make('kode_faktur')
                     ->copyable()
                     ->color('warning')
@@ -317,28 +328,13 @@ class FakturResource extends Resource
                     ->searchable()
                     ->copyMessage('Berhasil Disalin')
                     ->date(),
-                Tables\Columns\TextColumn::make('ket_faktur')
-                    ->copyable()
-                    ->searchable()
-                    ->sortable()
-                    ->copyMessage('Berhasil Disalin')
-                    ->placeholder('-')
-                    ->label('Keterangan'),
-                Tables\Columns\TextColumn::make('total_harga')
-                    ->money('IDR')
-                    ->searchable()
-                    ->sortable()
-                    ->copyable()
-                    ->copyMessage('Berhasil Disalin')
-                    ->label('Total'),
-                Tables\Columns\TextColumn::make('ppn')
-                    ->money('IDR')
-                    ->sortable()
-                    ->label('PPN'),
-                Tables\Columns\TextColumn::make('pph')
-                    ->money('IDR')
-                    ->sortable()
-                    ->label('PPH'),
+                // Tables\Columns\TextColumn::make('total_harga')
+                //     ->money('IDR')
+                //     ->searchable()
+                //     ->sortable()
+                //     ->copyable()
+                //     ->copyMessage('Berhasil Disalin')
+                //     ->label('Total'),
                 Tables\Columns\TextColumn::make('total_pp')
                     ->money('IDR')
                     ->searchable()
@@ -347,11 +343,11 @@ class FakturResource extends Resource
                     ->copyMessage('Berhasil Disalin')
                     ->label('Total Setelah Pajak'),
             ])
+            ->poll('3s')
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
                 DeleteAction::make()
                     ->icon('heroicon-o-trash')
@@ -392,7 +388,7 @@ class FakturResource extends Resource
         return [
             'index' => Pages\ListFakturs::route('/'),
             'create' => Pages\CreateFaktur::route('/create'),
-            'edit' => Pages\EditFaktur::route('/{record}/edit'),
+            // 'edit' => Pages\EditFaktur::route('/{record}/edit'),
         ];
     }
 }
