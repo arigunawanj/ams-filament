@@ -67,6 +67,14 @@ class Dashboard extends Component
             [DB::raw('MONTH(tanggal_kirim)'), $bulanIni]
         ])->count();
 
+        // Jumlah orderan seluruhnya
+        $jmlOrder = Penjualan::all()->count();
+
+        $semuaLunas = Penjualan::where('status', 0)->sum('jumlah');
+        $semuaBelum = Penjualan::where('status', 1)->sum('jumlah');
+
+
+
 
 
         return view('livewire.dashboard', compact(
@@ -81,6 +89,9 @@ class Dashboard extends Component
             'jmlBelum',
             'jmlLunas',
             'orderBulan',
+            'jmlOrder',
+            'semuaLunas',
+            'semuaBelum',
         ));
     }
 }

@@ -199,7 +199,7 @@
                     <h5 class="mb-2 text-xl tracking-tight text-gray-900 dark:text-white">Total Order Keseluruhan
                     </h5>
                 </a>
-                <p class="mb-3 text-xl font-bold text-black dark:text-white">0x order</p>
+                <p class="mb-3 text-xl font-bold text-black dark:text-white">{{ $jmlOrder }}x order</p>
             </div>
             <div class="">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -215,7 +215,7 @@
                 <a href="#">
                     <h5 class="mb-2 text-xl tracking-tight text-gray-900 dark:text-white">Transaksi Lunas</h5>
                 </a>
-                <p class="mb-3 text-xl font-bold text-black dark:text-white">Rp. 0</p>
+                <p class="mb-3 text-xl font-bold text-black dark:text-white">Rp. {{ number_format($semuaLunas, 0, '.','.') }}</p>
                 <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Dengan total 0x pemesanan</p>
             </div>
             <div class="">
@@ -233,7 +233,7 @@
                 <a href="#">
                     <h5 class="mb-2 text-xl tracking-tight text-gray-900 dark:text-white">Transaksi Belum Lunas</h5>
                 </a>
-                <p class="mb-3 text-xl font-bold text-black dark:text-white">Rp 0</p>
+                <p class="mb-3 text-xl font-bold text-black dark:text-white">Rp. {{ number_format($semuaBelum, 0, '.','.') }}</p>
                 <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Dengan total 0x pemesanan</p>
             </div>
             <div class="">
