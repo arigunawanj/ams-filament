@@ -14,6 +14,7 @@ class Dashboard extends Component
 {
     public function render()
     {
+        /****** WIDGET ********/
         // Jumlah Seluruh Barang
         $jmlbarang = Barang::all()->count();
 
@@ -23,6 +24,8 @@ class Dashboard extends Component
         // Jumlah Seluruh Distributor
         $jmldist = Distributor::all()->count();
 
+
+        /****** UMUM ********/
         // Merubah Format Bahasa
         setlocale(LC_ALL, 'id-ID', 'id_ID');
 
@@ -34,6 +37,8 @@ class Dashboard extends Component
 
         // $bulanCarbon = date_create(Carbon::now());
         $bulanEkstrak = Carbon::parse($carbon)->formatLocalized('%B');
+
+        /****** BULANAN ********/
 
         // Menghitung Seluruh Penjualan Bulan ini
         $penjualanBulanan = Penjualan::where(DB::raw('MONTH(tanggal_kirim)'), $bulanIni)->sum('jumlah');
@@ -62,16 +67,26 @@ class Dashboard extends Component
             [DB::raw('MONTH(tanggal_kirim)'), $bulanIni]
         ])->count();
 
+        $totBulan = Penjualan::where([
+            [DB::raw('MONTH(tanggal_kirim)'), $bulanIni]
+        ])->sum('jumlah');
+
+        $jumOrBulan = Penjualan::where([
+            [DB::raw('MONTH(tanggal_kirim)'), $bulanIni]
+        ])->count();
+
         // Menghitung Jumlah Orderan Seluruhnya pada Bulan ini
         $orderBulan = Penjualan::where([
             [DB::raw('MONTH(tanggal_kirim)'), $bulanIni]
         ])->count();
 
+        /****** KESELURUHAN ********/
+        
         // Jumlah orderan seluruhnya
         $jmlOrder = Penjualan::all()->count();
 
-        $semuaLunas = Penjualan::where('status', 0)->sum('jumlah');
-        $semuaBelum = Penjualan::where('status', 1)->sum('jumlah');
+        $semuaBelum = Penjualan::where('status', 0)->sum('jumlah');
+        $semuaLunas = Penjualan::where('status', 1)->sum('jumlah');
 
 
 
@@ -81,6 +96,8 @@ class Dashboard extends Component
             'carbon',
             'bulanEkstrak',
             'jmlbarang',
+            'totBulan',
+            'jumOrBulan',
             'jmlcust',
             'jmldist',
             'penjualanBulanan',

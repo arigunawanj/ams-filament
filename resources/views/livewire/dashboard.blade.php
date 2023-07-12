@@ -171,8 +171,8 @@
                 <a href="#">
                     <h5 class="mb-2 text-xl tracking-tight text-gray-900 dark:text-white">Jumlah Transaksi Bulan Ini</h5>
                 </a>
-                <p class="mb-3 text-xl font-bold text-black dark:text-white">Rp. 0</p>
-                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Dengan total 0x pemesanan</p>
+                <p class="mb-3 text-xl font-bold text-black dark:text-white">Rp. {{ number_format($totBulan, 0, '.','.') }}</p>
+                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Dengan total {{ $jumOrBulan }}x pemesanan</p>
             </div>
             <div class="">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -290,7 +290,7 @@
                     <h5 class="mb-2 text-xl tracking-tight text-gray-900 dark:text-white">Jumlah Belum Lunas</h5>
                 </a>
                 <p class="mb-3 text-xl font-bold text-black dark:text-white">Rp 0</p>
-                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Dengan total 0x pemesanan</p>
+                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Dengan total {{ $jmlOrder }}x pemesanan</p>
             </div>
             <div class="">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
