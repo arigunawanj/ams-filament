@@ -80,13 +80,58 @@ class Dashboard extends Component
             [DB::raw('MONTH(tanggal_kirim)'), $bulanIni]
         ])->count();
 
+        $bulanTerlaris = DB::table('penjualans')
+                    ->join('fakturs', 'penjualans.kode', 'fakturs.kode_faktur')
+                    ->join('detail_fakturs', 'fakturs.id', 'detail_fakturs.faktur_id')
+                    ->join('barangs', 'detail_fakturs.barang_id', 'barangs.id')
+                    ->where(DB::raw('MONTH(tanggal_kirim)'), $bulanIni)
+                    ->groupBy('barangs.id', 'barangs.nama_barang')
+                    ->select('barangs.nama_barang', DB::raw('count(*) as total_orders'))
+                    ->orderBy('total_orders', 'desc')
+                    ->first();
+
+        $bulanCustomer = DB::table('penjualans')
+                            ->join('customers', 'penjualans.customer_id', 'customers.id')
+                            ->where(DB::raw('MONTH(tanggal_kirim)'), $bulanIni)
+                            ->groupBy('customers.id', 'customers.nama_customer')
+                            ->select('customers.nama_customer', DB::raw('count(*) as total_orders'))
+                            ->orderBy('total_orders', 'desc')
+                            ->first();
+
         /****** KESELURUHAN ********/
         
         // Jumlah orderan seluruhnya
         $jmlOrder = Penjualan::all()->count();
 
+        // Jumlah Semua Penjualan Belum Lunas 
         $semuaBelum = Penjualan::where('status', 0)->sum('jumlah');
+
+        $jumlahBelum = Penjualan::where('status', 0)->count();
+        $jumlahLunas = Penjualan::where('status', 1)->count();
+        
+        // Jumlah Semua Penjualan yang Sudah Lunas 
         $semuaLunas = Penjualan::where('status', 1)->sum('jumlah');
+
+        // Jumlah Seluruh Orderan baik Lunas dan Belum
+        $jumlahSemua = Penjualan::all()->sum('jumlah');
+
+        $barangTerlaris = DB::table('penjualans')
+                    ->join('fakturs', 'penjualans.kode', 'fakturs.kode_faktur')
+                    ->join('detail_fakturs', 'fakturs.id', 'detail_fakturs.faktur_id')
+                    ->join('barangs', 'detail_fakturs.barang_id', 'barangs.id')
+                    ->groupBy('barangs.id', 'barangs.nama_barang')
+                    ->select('barangs.nama_barang', DB::raw('count(*) as total_orders'))
+                    ->orderBy('total_orders', 'desc')
+                    ->first();
+
+        $customerLangganan = DB::table('penjualans')
+                            ->join('customers', 'penjualans.customer_id', 'customers.id')
+                            ->groupBy('customers.id', 'customers.nama_customer')
+                            ->select('customers.nama_customer', DB::raw('count(*) as total_orders'))
+                            ->orderBy('total_orders', 'desc')
+                            ->first();
+
+
 
 
 
@@ -109,6 +154,13 @@ class Dashboard extends Component
             'jmlOrder',
             'semuaLunas',
             'semuaBelum',
+            'jumlahSemua',
+            'jumlahBelum',
+            'jumlahLunas',
+            'barangTerlaris',
+            'customerLangganan',
+            'bulanTerlaris',
+            'bulanCustomer',
         ));
     }
 }
