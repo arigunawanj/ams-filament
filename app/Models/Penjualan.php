@@ -20,4 +20,9 @@ class Penjualan extends Model
     {
         return $this->belongsTo(Customer::class);
     }
+
+    public function pelunasan()
+    {
+        return $this->hasMany(Pelunasan::class);
+    }
 }
