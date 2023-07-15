@@ -170,7 +170,6 @@ return [
         App\Providers\RouteServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
-        App\Providers\FilamentServiceProvider::class,
     ])->toArray(),
 
     /*
